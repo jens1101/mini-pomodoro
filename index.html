@@ -3,14 +3,22 @@
 
 <head>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 
 <body>
   <main>
-    <button onclick="startPomodoro()">Start Pomodoro</button>
-    <button onclick="stopPomodoro()">Stop Pomodoro</button>
-    <div id="countdown"></div>
+    <h1>Mini Pomodoro</h1>
+    <section>
+      <button class="start-pomodoro">Start Pomodoro</button>
+      <button class="stop-pomodoro">Stop Pomodoro</button>
+      <div class="countdown"></div>
+    </section>
+
+    <section>
+      <h2>Distractions</h2>
+      <ul class="distractions"></ul>
+    </section>
   </main>
 </body>
 

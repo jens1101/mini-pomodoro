@@ -8,16 +8,30 @@
 let interval = null
 const COUNTDOWN_SECONDS = 25 * 60 // 25 minutes
 const notificationSound = new Audio()
-notificationSound.src = 'https://www.myinstants.com/media/sounds/its-time-to-stop-button.mp3'
 
 const startPomodoroButton = document.querySelector('.start-pomodoro')
 const stopPomodoroButton = document.querySelector('.stop-pomodoro')
 const countdown = document.querySelector('.countdown')
-if (startPomodoroButton) {
+const distractionForm = document.querySelector('.add-distraction')
+
+init()
+
+function init () {
+  notificationSound.src = 'assets/audio/pomodoro-over.mp3'
+
   startPomodoroButton.addEventListener('click', startPomodoro)
-}
-if (stopPomodoroButton) {
   stopPomodoroButton.addEventListener('click', stopPomodoro)
+  distractionForm.addEventListener('submit', function (event) {
+    event.preventDefault()
+
+    const inputElement = distractionForm.querySelector('input')
+    addDistraction(inputElement.value)
+  })
+
+  if (Notification.permission === 'default') {
+    // Request notification permission if it hasn't been explicitly granted or denied.
+    Notification.requestPermission()
+  }
 }
 
 function startPomodoro () {

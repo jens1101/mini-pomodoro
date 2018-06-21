@@ -1,3 +1,5 @@
+'use strict'
+
 /* globals Audio, Notification */
 
 // TODO: Maybe use local storage so that the pomodoro doesn't get lost when closing the tab.

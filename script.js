@@ -69,9 +69,16 @@ function displayTime (seconds) {
   countdown.innerHTML = `${minutes}:${_seconds}`
 }
 
+function addDistraction (distraction) {
+  const liElement = document.createElement('li')
+  liElement.appendChild(document.createTextNode(distraction))
+
+  document.querySelector('.distractions').appendChild(liElement)
+}
+
 function showNotification () {
   if (Notification.permission === 'granted') {
-    Notification('Time is up!')
+    new Notification('Time is up!')
   }
   notificationSound.play()
 }

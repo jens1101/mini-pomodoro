@@ -13,6 +13,7 @@ const startPomodoroButton = document.querySelector('.start-pomodoro')
 const stopPomodoroButton = document.querySelector('.stop-pomodoro')
 const countdown = document.querySelector('.countdown')
 const distractionForm = document.querySelector('.add-distraction')
+const distractionsList = document.querySelector('.distractions')
 
 init()
 
@@ -26,6 +27,9 @@ function init () {
 
     const inputElement = distractionForm.querySelector('input')
     addDistraction(inputElement.value)
+
+    distractionForm.reset()
+    inputElement.focus()
   })
 
   if (Notification.permission === 'default') {
@@ -70,10 +74,16 @@ function displayTime (seconds) {
 }
 
 function addDistraction (distraction) {
-  const liElement = document.createElement('li')
-  liElement.appendChild(document.createTextNode(distraction))
+  const liElement = distractionsList
+    .querySelector('.distraction-template')
+    .content
+    .firstElementChild
+    .cloneNode(true)
 
-  document.querySelector('.distractions').appendChild(liElement)
+  liElement.querySelector('span').appendChild(document.createTextNode(distraction))
+  liElement.querySelector('button').addEventListener('click', () => liElement.remove())
+
+  distractionsList.appendChild(liElement)
 }
 
 function showNotification () {

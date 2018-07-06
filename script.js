@@ -36,6 +36,7 @@ function init () {
 }
 
 function addDistraction (distraction) {
+  // TODO: add an auto-complete feature based on what you previously typed in here.
   const liElement = distractionsList
     .querySelector('.distraction-template')
     .content

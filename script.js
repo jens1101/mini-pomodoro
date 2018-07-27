@@ -1,6 +1,6 @@
-'use strict'
+/* globals Audio, customElements, Notification */
 
-/* globals Audio, Notification */
+import {CountdownTimer} from './lib/countdown-timer/main.js'
 
 // TODO: Maybe use local storage so that the pomodoro doesn't get lost when closing the tab.
 
@@ -18,6 +18,8 @@ function init () {
 
   countdown.setAttribute('duration', COUNTDOWN_SECONDS)
   countdown.addEventListener('countdowncomplete', showNotification)
+
+  customElements.define('countdown-timer', CountdownTimer)
 
   distractionForm.addEventListener('submit', function (event) {
     event.preventDefault()

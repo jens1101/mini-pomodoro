@@ -3,8 +3,6 @@
 import {CountdownTimer} from './lib/countdown-timer/main.js'
 import {EditableList} from './lib/editable-list/main.js'
 
-// TODO: Maybe use local storage so that the pomodoro doesn't get lost when closing the tab.
-
 const notificationSound = new Audio()
 
 const countdown = document.getElementById('countdown')
@@ -20,7 +18,8 @@ function init () {
   customElements.define('editable-list', EditableList)
 
   if (Notification.permission === 'default') {
-    // Request notification permission if it hasn't been explicitly granted or denied.
+    // Request notification permission if it hasn't been explicitly granted or
+    // denied.
     Notification.requestPermission()
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "mini-pomodoro",
+  "version": "0.9.0",
+  "description": "",
+  "main": "script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jens1101/mini-pomodoro.git"
+  },
+  "author": "Jens Tschirpig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jens1101/mini-pomodoro/issues"
+  },
+  "homepage": "https://github.com/jens1101/mini-pomodoro#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}

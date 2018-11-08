@@ -1,7 +1,7 @@
 /* globals Audio, customElements, Notification */
 
-import {CountdownTimer} from './lib/countdown-timer/main.js'
-import {EditableList} from './lib/editable-list/main.js'
+import { CountdownTimer } from './lib/countdown-timer/main.js'
+import { EditableList } from './lib/editable-list/main.js'
 
 const notificationSound = new Audio()
 
@@ -26,7 +26,11 @@ function init () {
 
 function showNotification () {
   if (Notification.permission === 'granted') {
-    new Notification('Time is up!')
+    // Creates a system notification that will be shown to the user to notify
+    // him that the time is up.
+    // The `no-new` ESLint rule is supressed because this syntax is required
+    // for system notifications to work.
+    new Notification('Time is up!') // eslint-disable-line no-new
   }
   notificationSound.play()
 }

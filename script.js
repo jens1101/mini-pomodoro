@@ -1,7 +1,7 @@
-/* globals Audio, customElements, Notification */
+/* globals Audio, Notification */
 
-import { CountdownTimer } from './lib/countdown-timer/main.js'
-import { EditableList } from './lib/editable-list/main.js'
+import './lib/countdown-timer/main.js'
+import './lib/editable-list/main.js'
 
 const notificationSound = new Audio()
 
@@ -13,9 +13,6 @@ function init () {
   notificationSound.src = 'assets/audio/pomodoro-over.mp3'
 
   countdown.addEventListener('countdowncomplete', showNotification)
-
-  customElements.define('countdown-timer', CountdownTimer)
-  customElements.define('editable-list', EditableList)
 
   if (Notification.permission === 'default') {
     // Request notification permission if it hasn't been explicitly granted or

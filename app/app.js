@@ -32,7 +32,7 @@ export class App {
       })
       .then((value) => {
         if (value) {
-          this.countdown._tick(value.startTimestamp, 0)
+          this.countdown.resumeCountdown(value.startTimestamp)
         }
       })
   }

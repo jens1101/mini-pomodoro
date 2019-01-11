@@ -28,5 +28,8 @@ Temporary Items
 .apdisk
 
 # Node and NPM
-# Dependency directories
+## Dependency directories
 node_modules/
+
+# JetBrains
+.idea/

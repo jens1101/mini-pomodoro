@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Editable List</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<template>
+    <li>
+        <slot></slot>
+        <button type="button">
+            <slot name="remove-button">&times;</slot>
+        </button>
+    </li>
+</template>
+</body>
+</html>

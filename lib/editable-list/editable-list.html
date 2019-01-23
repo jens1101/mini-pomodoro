@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Editable List</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<template id="form-and-list">
+    <form>
+        <label>
+            <slot name="input-label">Add an item</slot>
+            <input type="text" required/>
+        </label>
+        <button type="submit">
+            <slot name="add-button">Add</slot>
+        </button>
+    </form>
+
+    <ul></ul>
+</template>
+<template id="list-item">
+    <li>
+        <span></span>
+        <span slot="remove-button">&times;</span>
+    </li>
+</template>
+</body>
+</html>

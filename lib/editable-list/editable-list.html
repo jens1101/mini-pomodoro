@@ -5,24 +5,23 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<template id="form-and-list">
+<template>
     <form>
         <label>
+            <!--
+            This slot defines the content that should appear in the label
+            -->
             <slot name="input-label">Add an item</slot>
-            <input type="text" required/>
         </label>
         <button type="submit">
+            <!--
+            This slot defines the content that should appear in the add button
+            -->
             <slot name="add-button">Add</slot>
         </button>
     </form>
 
     <ul></ul>
-</template>
-<template id="list-item">
-    <li>
-        <span></span>
-        <span slot="remove-button">&times;</span>
-    </li>
 </template>
 </body>
 </html>

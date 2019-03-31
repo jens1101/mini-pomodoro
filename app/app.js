@@ -11,7 +11,9 @@ export class App {
     if (Notification.permission === 'default') {
       // Request notification permission if it hasn't been explicitly granted or
       // denied.
-      Notification.requestPermission()
+      this.notificationPermission = Notification.requestPermission()
+    } else {
+      this.notificationPermission = Promise.resolve(Notification.permission)
     }
 
     // Setup all event listeners
@@ -20,9 +22,9 @@ export class App {
       event => this.saveCountdownTimestamp(event.detail.startTimestamp))
     this.countdown.addEventListener('countdownstop',
       () => this.deleteCountdownTimestamp())
-    this.countdown.addEventListener('countdowncomplete', () => {
-      this.deleteCountdownTimestamp()
-      this.showNotification()
+    this.countdown.addEventListener('countdowncomplete', async () => {
+      await this.deleteCountdownTimestamp()
+      await this.showNotification()
     })
 
     // Setup the Indexed DB
@@ -102,14 +104,15 @@ export class App {
   /**
    * Shows the "Time is up" notification to the user.
    */
-  showNotification () {
-    if (Notification.permission === 'granted') {
+  async showNotification () {
+    if (await this.notificationPermission === 'granted') {
       // Creates a system notification that will be shown to the user to notify
       // him that the time is up.
-      // The `no-new` ESLint rule is supressed because this syntax is required
+      // The `no-new` ESLint rule is suppressed because this syntax is required
       // for system notifications to work.
       new Notification('Time is up!') // eslint-disable-line no-new
     }
-    this.notificationSound.play()
+
+    await this.notificationSound.play()
   }
 }

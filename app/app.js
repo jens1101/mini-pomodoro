@@ -172,4 +172,22 @@ export class App {
       })
     })
   }
+
+  /**
+   * Removes the distraction with the given key ID from the DB
+   * @param {number} keyId The ID of the distraction to remove from the DB.
+   * @returns {Promise<undefined>} Resolves once the operation is done.
+   */
+  async deleteDistraction (keyId) {
+    await this.dbPromise
+
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('editable-lists', 'readwrite')
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+      tx.onabort = () => reject(tx.error)
+
+      tx.objectStore('editable-lists').delete(keyId)
+    })
+  }
 }

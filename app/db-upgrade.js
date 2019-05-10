@@ -8,5 +8,13 @@ export function dbUpgrade (db, oldVersion) {
   switch (oldVersion) {
     case 0:
       db.createObjectStore('countdown-timers', { keyPath: 'id' })
+    // Fallthrough
+    case 1:
+      const editableListObjectStore = db.createObjectStore('editable-lists', {
+        keyPath: 'keyId',
+        autoIncrement: true
+      })
+
+      editableListObjectStore.createIndex('elementIdIndex', 'elementId')
   }
 }

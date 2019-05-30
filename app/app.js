@@ -1,4 +1,4 @@
-/* globals Notification, Audio */
+/* globals Notification, Audio, IDBKeyRange */
 
 import { dbUpgrade } from './db-upgrade.js'
 
@@ -85,13 +85,43 @@ export class App {
     // Setup the distraction list event listeners
     this.distractions.addEventListener('liadded', async (event) => {
       const liElement = event.detail.liElement
-      liElement.keyId = await this.saveDistraction(liElement.text)
+      if (liElement.keyId == null) {
+        liElement.keyId = await this.saveDistraction(liElement.text)
+      }
     })
     this.distractions.addEventListener('liremoved',
       event => this.deleteDistraction(event.detail.keyId))
 
     await this.dbPromise
-    // TODO: implement
+
+    const distractions = await new Promise((resolve, reject) => {
+      const tx = this.db.transaction('editable-lists', 'readonly')
+      tx.onerror = () => reject(tx.error)
+      tx.onabort = () => reject(tx.error)
+
+      const results = []
+
+      const index = tx.objectStore('editable-lists').index('elementIdIndex')
+      const request = index.openCursor(IDBKeyRange.only(this.distractions.id))
+
+      request.onerror = () => reject(request.error)
+
+      request.onsuccess = (event) => {
+        // noinspection JSUnresolvedVariable
+        const cursor = event.target.result
+
+        if (cursor) {
+          results.push(cursor.value)
+          cursor.continue()
+        } else {
+          resolve(results)
+        }
+      }
+    })
+
+    for (const distraction of distractions) {
+      this.distractions.addListItem(distraction.text, distraction.keyId)
+    }
   }
 
   /**

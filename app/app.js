@@ -107,12 +107,12 @@ export class App {
    * @private
    */
   async _initDistractionList (distractionsElement) {
-    this.distractions = distractionsElement
+    this.distractionsElement = distractionsElement
 
     // Setup the distraction list event listeners
     // When a new list item has been added and it doesn't have an ID yet then
     // add it to the DB.
-    this.distractions.addEventListener('liadded', async (event) => {
+    this.distractionsElement.addEventListener('liadded', async (event) => {
       const liElement = event.detail.liElement
       if (liElement.keyId == null) {
         liElement.keyId = await this.saveDistraction(liElement.text)
@@ -120,7 +120,7 @@ export class App {
     })
     // When a list item has been removed from the view then also remove it from
     // the DB.
-    this.distractions.addEventListener('liremoved',
+    this.distractionsElement.addEventListener('liremoved',
       event => this.deleteDistraction(event.detail.keyId))
 
     // Wait for the DB to be done setting up
@@ -141,7 +141,7 @@ export class App {
       // can be stored in the same table.
       // Here we need to open a cursor and iterate only over the list items
       // that belong to the distraction list.
-      const request = index.openCursor(IDBKeyRange.only(this.distractions.id))
+      const request = index.openCursor(IDBKeyRange.only(this.distractionsElement.id))
 
       request.onerror = () => reject(request.error)
 
@@ -164,7 +164,7 @@ export class App {
     // Add all the distractions that were saved in the DB to the distractions
     // list.
     for (const distraction of distractions) {
-      this.distractions.addListItem(distraction.text, distraction.keyId)
+      this.distractionsElement.addListItem(distraction.text, distraction.keyId)
     }
   }
 
@@ -237,7 +237,7 @@ export class App {
       tx.onabort = () => reject(tx.error)
 
       const request = tx.objectStore('editable-lists').add({
-        elementId: this.distractions.id,
+        elementId: this.distractionsElement.id,
         text
       })
 

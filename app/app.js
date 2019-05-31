@@ -2,15 +2,26 @@
 
 import { dbUpgrade } from './db-upgrade.js'
 
+/**
+ * This is the main class for the application. This currently controls the
+ * countdown timer and the list of distractions.
+ */
 export class App {
+  /**
+   * Initialises the countdown timer and the editable list of distractions.
+   * @param {CountdownTimer} countdownElement The element that is the countdown
+   * timer for this app.
+   * @param {EditableList} distractionsElement The element that is the
+   * editable list of distractions.
+   */
   constructor (countdownElement, distractionsElement) {
     // Setup the notification sound for when the Pomodoro is done
     this.notificationSound = new Audio()
     this.notificationSound.src = 'assets/audio/pomodoro-over.mp3'
 
     if (Notification.permission === 'default') {
-      // Request notification permission if it hasn't been explicitly granted or
-      // denied.
+      // Request notification permission if it hasn't been explicitly granted
+      // or denied.
       this.notificationPermission = Notification.requestPermission()
     } else {
       this.notificationPermission = Promise.resolve(Notification.permission)
@@ -39,23 +50,30 @@ export class App {
   /**
    * Initialise the countdown timer. This sets up all event handlers and
    * retrieves the timer's start timestamp from the DB (if any is available)
-   * @param {HTMLElement} countdownElement The countdown timer element to
+   * @param {CountdownTimer} countdownElement The countdown timer element to
    * initialise
    * @returns {Promise<void>} Resolves once the timer has been initialised.
    * @private
    */
   async _initCountdownTimer (countdownElement) {
-    // Setup the countdown event listeners
     this.countdown = countdownElement
+
+    // Setup the countdown event listeners
+    // When the countdown starts then save the start timestamp to the DB.
     this.countdown.addEventListener('countdownstart',
       event => this.saveCountdownTimestamp(event.detail.startTimestamp))
+    // When the countdown was stopped by the user then remove the timestamp
+    // from the DB
     this.countdown.addEventListener('countdownstop',
       () => this.deleteCountdownTimestamp())
+    // When the countdown has completed successfully then show the notification
+    // and then remove it from the DB.
     this.countdown.addEventListener('countdowncomplete', async () => {
       await this.deleteCountdownTimestamp()
       await this.showNotification()
     })
 
+    // Wait for the DB to be done setting up
     await this.dbPromise
 
     // Get the countdown timer's value from the DB. If a value is stored then
@@ -79,21 +97,36 @@ export class App {
     }
   }
 
+  /**
+   * Initialise the distractions list. This sets up all event handlers and
+   * retrieves the list's previously saved items from the DB (if any are
+   * available)
+   * @param {EditableList} distractionsElement The editable list element to
+   * initialise as the distractions list.
+   * @returns {Promise<void>} Resolves once the list has been initialised.
+   * @private
+   */
   async _initDistractionList (distractionsElement) {
     this.distractions = distractionsElement
 
     // Setup the distraction list event listeners
+    // When a new list item has been added and it doesn't have an ID yet then
+    // add it to the DB.
     this.distractions.addEventListener('liadded', async (event) => {
       const liElement = event.detail.liElement
       if (liElement.keyId == null) {
         liElement.keyId = await this.saveDistraction(liElement.text)
       }
     })
+    // When a list item has been removed from the view then also remove it from
+    // the DB.
     this.distractions.addEventListener('liremoved',
       event => this.deleteDistraction(event.detail.keyId))
 
+    // Wait for the DB to be done setting up
     await this.dbPromise
 
+    // Get the distractions list's items from the DB and populate the list
     const distractions = await new Promise((resolve, reject) => {
       const tx = this.db.transaction('editable-lists', 'readonly')
       tx.onerror = () => reject(tx.error)
@@ -101,7 +134,13 @@ export class App {
 
       const results = []
 
-      const index = tx.objectStore('editable-lists').index('elementIdIndex')
+      const index = tx.objectStore('editable-lists')
+        .index('elementIdIndex')
+
+      // The DB is structured in such a way that multiple editable lists' items
+      // can be stored in the same table.
+      // Here we need to open a cursor and iterate only over the list items
+      // that belong to the distraction list.
       const request = index.openCursor(IDBKeyRange.only(this.distractions.id))
 
       request.onerror = () => reject(request.error)
@@ -111,14 +150,19 @@ export class App {
         const cursor = event.target.result
 
         if (cursor) {
+          // We keep on pushing to the results array while the cursor contains
+          // a value
           results.push(cursor.value)
           cursor.continue()
         } else {
+          // Resolve the promise once we're done iterating.
           resolve(results)
         }
       }
     })
 
+    // Add all the distractions that were saved in the DB to the distractions
+    // list.
     for (const distraction of distractions) {
       this.distractions.addListItem(distraction.text, distraction.keyId)
     }

@@ -56,19 +56,19 @@ export class App {
    * @private
    */
   async _initCountdownTimer (countdownElement) {
-    this.countdown = countdownElement
+    this.countdownElement = countdownElement
 
     // Setup the countdown event listeners
     // When the countdown starts then save the start timestamp to the DB.
-    this.countdown.addEventListener('countdownstart',
+    this.countdownElement.addEventListener('countdownstart',
       event => this.saveCountdownTimestamp(event.detail.startTimestamp))
     // When the countdown was stopped by the user then remove the timestamp
     // from the DB
-    this.countdown.addEventListener('countdownstop',
+    this.countdownElement.addEventListener('countdownstop',
       () => this.deleteCountdownTimestamp())
     // When the countdown has completed successfully then show the notification
     // and then remove it from the DB.
-    this.countdown.addEventListener('countdowncomplete', async () => {
+    this.countdownElement.addEventListener('countdowncomplete', async () => {
       await this.deleteCountdownTimestamp()
       await this.showNotification()
     })
@@ -85,7 +85,7 @@ export class App {
       tx.onabort = () => reject(tx.error)
 
       const request = tx.objectStore('countdown-timers')
-        .get(this.countdown.id)
+        .get(this.countdownElement.id)
       request.onsuccess = () => resolve(request.result)
       request.onerror = () => reject(request.error)
     })
@@ -93,7 +93,7 @@ export class App {
     if (value) {
       // If an object was associated with the current view's countdown timer
       // then resume the countdown from the timestamp stored in the object.
-      this.countdown.resumeCountdown(value.startTimestamp)
+      this.countdownElement.resumeCountdown(value.startTimestamp)
     }
   }
 
@@ -183,7 +183,7 @@ export class App {
       tx.onabort = () => reject(tx.error)
 
       tx.objectStore('countdown-timers').put({
-        id: this.countdown.id,
+        id: this.countdownElement.id,
         startTimestamp: startTimestamp
       })
     })
@@ -202,7 +202,7 @@ export class App {
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      tx.objectStore('countdown-timers').delete(this.countdown.id)
+      tx.objectStore('countdown-timers').delete(this.countdownElement.id)
     })
   }
 

@@ -1,6 +1,7 @@
 /* globals Notification, Audio, IDBKeyRange */
 
 import { dbUpgrade } from './db-upgrade.js'
+import { DATABASE } from './constants.js'
 
 /**
  * This is the main class for the application. This currently controls the
@@ -30,7 +31,7 @@ export class App {
     // Setup the Indexed DB
     this.dbPromise = new Promise((resolve, reject) => {
       // Open the DB
-      const request = window.indexedDB.open('mini-pomodoro', 2)
+      const request = window.indexedDB.open(DATABASE.NAME, 2)
 
       request.onsuccess = () => resolve(request.result)
       request.onerror = () => reject(request.error)
@@ -80,11 +81,11 @@ export class App {
     // the countdown timer will be initialised with that value's start
     // timestamp.
     const value = await new Promise((resolve, reject) => {
-      const tx = this.db.transaction('countdown-timers', 'readonly')
+      const tx = this.db.transaction(DATABASE.COUNTDOWNS_STORE, 'readonly')
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      const request = tx.objectStore('countdown-timers')
+      const request = tx.objectStore(DATABASE.COUNTDOWNS_STORE)
         .get(this.countdownElement.id)
       request.onsuccess = () => resolve(request.result)
       request.onerror = () => reject(request.error)
@@ -128,14 +129,14 @@ export class App {
 
     // Get the distractions list's items from the DB and populate the list
     const distractions = await new Promise((resolve, reject) => {
-      const tx = this.db.transaction('editable-lists', 'readonly')
+      const tx = this.db.transaction(DATABASE.LIST_ITEMS_STORE, 'readonly')
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
       const results = []
 
-      const index = tx.objectStore('editable-lists')
-        .index('elementIdIndex')
+      const index = tx.objectStore(DATABASE.LIST_ITEMS_STORE)
+        .index(DATABASE.LIST_INDEX)
 
       // The DB is structured in such a way that multiple editable lists' items
       // can be stored in the same table.
@@ -164,7 +165,8 @@ export class App {
     // Add all the distractions that were saved in the DB to the distractions
     // list.
     for (const distraction of distractions) {
-      this.distractionsElement.addListItem(distraction.text, distraction.keyId)
+      this.distractionsElement.addListItem(distraction.text,
+        distraction[DATABASE.LIST_ITEM_ID])
     }
   }
 
@@ -177,13 +179,13 @@ export class App {
     await this.dbPromise
 
     return new Promise((resolve, reject) => {
-      const tx = this.db.transaction('countdown-timers', 'readwrite')
+      const tx = this.db.transaction(DATABASE.COUNTDOWNS_STORE, 'readwrite')
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      tx.objectStore('countdown-timers').put({
-        id: this.countdownElement.id,
+      tx.objectStore(DATABASE.COUNTDOWNS_STORE).put({
+        [DATABASE.COUNTDOWN_ID]: this.countdownElement.id,
         startTimestamp: startTimestamp
       })
     })
@@ -197,12 +199,12 @@ export class App {
     await this.dbPromise
 
     return new Promise((resolve, reject) => {
-      const tx = this.db.transaction('countdown-timers', 'readwrite')
+      const tx = this.db.transaction(DATABASE.COUNTDOWNS_STORE, 'readwrite')
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      tx.objectStore('countdown-timers').delete(this.countdownElement.id)
+      tx.objectStore(DATABASE.COUNTDOWNS_STORE).delete(this.countdownElement.id)
     })
   }
 
@@ -231,17 +233,18 @@ export class App {
     await this.dbPromise
 
     return new Promise((resolve, reject) => {
-      const tx = this.db.transaction('editable-lists', 'readwrite')
+      const tx = this.db.transaction(DATABASE.LIST_ITEMS_STORE, 'readwrite')
       tx.oncomplete = () => resolve(successPromise)
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      const request = tx.objectStore('editable-lists').add({
-        elementId: this.distractionsElement.id,
+      const request = tx.objectStore(DATABASE.LIST_ITEMS_STORE).add({
+        [DATABASE.LIST_ID]: this.distractionsElement.id,
         text
       })
 
       const successPromise = new Promise(resolve => {
+        // noinspection JSUnresolvedVariable
         request.onsuccess = event => resolve(event.target.result)
       })
     })
@@ -256,12 +259,12 @@ export class App {
     await this.dbPromise
 
     return new Promise((resolve, reject) => {
-      const tx = this.db.transaction('editable-lists', 'readwrite')
+      const tx = this.db.transaction(DATABASE.LIST_ITEMS_STORE, 'readwrite')
       tx.oncomplete = () => resolve()
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      tx.objectStore('editable-lists').delete(keyId)
+      tx.objectStore(DATABASE.LIST_ITEMS_STORE).delete(keyId)
     })
   }
 }

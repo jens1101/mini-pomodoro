@@ -1,3 +1,5 @@
+import { DATABASE } from './constants.js'
+
 /**
  * Upgrade code for the app's indexed database. This will upgrade the given DB
  * object to the latest version based on its current version.
@@ -7,14 +9,14 @@
 export function dbUpgrade (db, oldVersion) {
   switch (oldVersion) {
     case 0:
-      db.createObjectStore('countdown-timers', { keyPath: 'id' })
+      db.createObjectStore(DATABASE.COUNTDOWNS_STORE, {
+        keyPath: DATABASE.COUNTDOWN_ID
+      })
     // Fallthrough
     case 1:
-      const editableListObjectStore = db.createObjectStore('editable-lists', {
-        keyPath: 'keyId',
+      db.createObjectStore(DATABASE.LIST_ITEMS_STORE, {
+        keyPath: DATABASE.LIST_ITEM_ID,
         autoIncrement: true
-      })
-
-      editableListObjectStore.createIndex('elementIdIndex', 'elementId')
+      }).createIndex(DATABASE.LIST_INDEX, DATABASE.LIST_ID)
   }
 }

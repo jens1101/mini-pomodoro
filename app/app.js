@@ -115,14 +115,14 @@ export class App {
     // add it to the DB.
     this.distractionsElement.addEventListener('liadded', async (event) => {
       const liElement = event.detail.liElement
-      if (liElement.keyId == null) {
-        liElement.keyId = await this.saveDistraction(liElement.text)
+      if (liElement.dbId == null) {
+        liElement.dbId = await this.saveDistraction(liElement.text)
       }
     })
     // When a list item has been removed from the view then also remove it from
     // the DB.
     this.distractionsElement.addEventListener('liremoved',
-      event => this.deleteDistraction(event.detail.keyId))
+      event => this.deleteDistraction(event.detail.dbId))
 
     // Wait for the DB to be done setting up
     await this.dbPromise
@@ -252,10 +252,10 @@ export class App {
 
   /**
    * Removes the distraction with the given key ID from the DB
-   * @param {number} keyId The ID of the distraction to remove from the DB.
+   * @param {number} dbId The ID of the distraction to remove from the DB.
    * @returns {Promise<undefined>} Resolves once the operation is done.
    */
-  async deleteDistraction (keyId) {
+  async deleteDistraction (dbId) {
     await this.dbPromise
 
     return new Promise((resolve, reject) => {
@@ -264,7 +264,7 @@ export class App {
       tx.onerror = () => reject(tx.error)
       tx.onabort = () => reject(tx.error)
 
-      tx.objectStore(DATABASE.LIST_ITEMS_STORE).delete(keyId)
+      tx.objectStore(DATABASE.LIST_ITEMS_STORE).delete(dbId)
     })
   }
 }

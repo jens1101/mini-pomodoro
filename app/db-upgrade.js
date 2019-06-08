@@ -1,22 +1,31 @@
-import { DATABASE } from './constants.js'
-
 /**
  * Upgrade code for the app's indexed database. This will upgrade the given DB
  * object to the latest version based on its current version.
  * @param {IDBDatabase} db The Indexed DB to upgrade.
  * @param {number} oldVersion The version of the Indexed DB before upgrading.
+ * @param {IDBTransaction} transaction The transaction that wraps this upgrade.
  */
-export function dbUpgrade (db, oldVersion) {
+export function dbUpgrade (db, oldVersion, transaction) {
+  // Note that values in this file are hard-coded, even though constants are
+  // available and preferred. The reason for this is if names change then old
+  // migrations and DB instances will not break as a result of such a change.
+
   switch (oldVersion) {
     case 0:
-      db.createObjectStore(DATABASE.COUNTDOWNS_STORE, {
-        keyPath: DATABASE.COUNTDOWN_ID
+      // Create the object store for the countdown timers
+      db.createObjectStore('countdown-timers', {
+        keyPath: 'id'
       })
     // Fallthrough
     case 1:
-      db.createObjectStore(DATABASE.LIST_ITEMS_STORE, {
-        keyPath: DATABASE.LIST_ITEM_ID,
+      // Rename the countdown timers object store. This is done due to a change
+      // in naming conventions.
+      transaction.objectStore('countdown-timers').name = 'countdownTimers'
+
+      // Create the object store for the list items
+      db.createObjectStore('listItems', {
+        keyPath: 'id',
         autoIncrement: true
-      }).createIndex(DATABASE.LIST_INDEX, DATABASE.LIST_ID)
+      }).createIndex('listIdIndex', 'listId')
   }
 }

@@ -37,8 +37,10 @@ export class App {
       request.onerror = () => reject(request.error)
 
       // Upgrade the DB if necessary
-      request.onupgradeneeded = event => dbUpgrade(request.result,
-        event.oldVersion)
+      // noinspection JSUnresolvedVariable
+      request.onupgradeneeded = event => dbUpgrade(event.target.result,
+        event.oldVersion,
+        event.target.transaction)
     }).then(db => { this.db = db })
 
     // Initialise the countdown timer

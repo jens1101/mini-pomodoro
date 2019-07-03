@@ -10,8 +10,8 @@ import { DATABASE } from './constants.js'
 export class App {
   /**
    * Initialises the countdown timer and the editable list of distractions.
-   * @param {CountdownTimer} countdownElement The element that is the countdown
-   * timer for this app.
+   * @param {CountdownTimerElement} countdownElement The element that is the
+   * countdown timer for this app.
    * @param {EditableList} distractionsElement The element that is the
    * editable list of distractions.
    */
@@ -53,8 +53,8 @@ export class App {
   /**
    * Initialise the countdown timer. This sets up all event handlers and
    * retrieves the timer's start timestamp from the DB (if any is available)
-   * @param {CountdownTimer} countdownElement The countdown timer element to
-   * initialise
+   * @param {CountdownTimerElement} countdownElement The countdown timer element
+   * to initialise
    * @returns {Promise<void>} Resolves once the timer has been initialised.
    * @private
    */

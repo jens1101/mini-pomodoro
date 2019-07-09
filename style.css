@@ -1,3 +1,63 @@
-html {
-    background: #fff;
+:root {
+    /* Colours */
+    --primary-color: #006064;
+    --primary-light-color: #428e92;
+    --primary-dark-color: #00363a;
+    --secondary-color: #212121;
+    --secondary-light-color: #484848;
+    --secondary-dark-color: #000000;
+    --primary-text-color: #ffffff;
+    --secondary-text-color: #ffffff;
+
+    /* Responsiveness */
+    --container-width: 1200px;
+
+    /* Shadows */
+    --shadow-transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1);
+    --shadow-level-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-level-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    --shadow-level-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    --shadow-level-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    --shadow-level-5: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+
+    /* Miscellaneous */
+    --default-padding: 1rem;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    color: var(--primary-text-color);
+    background-color: var(--primary-dark-color);
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    padding-left: var(--default-padding);
+    padding-right: var(--default-padding);
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    background-color: var(--primary-light-color);
+    box-shadow: var(--shadow-level-1);
+    z-index: 1;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: var(--primary-color);
 }

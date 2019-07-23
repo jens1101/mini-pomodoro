@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="responsive.css" />
   <link rel="icon" type="image/png" href="assets/images/hourglass-icon.png" />
   <script src="main.js" type="module"></script>
 </head>
@@ -20,15 +21,17 @@
   </header>
 
   <main class="main container">
-    <section>
-      <h2>Countdown Timer</h2>
-      <countdown-timer id="countdown"></countdown-timer>
-    </section>
+    <div class="grid--auto-fit">
+      <section>
+        <h2>Countdown Timer</h2>
+        <countdown-timer id="countdown"></countdown-timer>
+      </section>
 
-    <section>
-      <h2>Distractions</h2>
-      <editable-list id="distractions"></editable-list>
-    </section>
+      <section>
+        <h2>Distractions</h2>
+        <editable-list id="distractions"></editable-list>
+      </section>
+    </div>
   </main>
 </body>
 

@@ -1,0 +1,34 @@
+/* Generic responsive container for content */
+.container {
+    width: var(--container-width);
+    max-width: var(--max-container-width);
+    padding-left: var(--default-padding);
+    padding-right: var(--default-padding);
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+.grid--auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
+    grid-column-gap: var(--default-padding);
+}
+
+.aspect-ratio-1to1::before {
+    content: "";
+    float: left;
+    padding-bottom: 100%;
+}
+
+.aspect-ratio-1to1::after {
+    clear: left;
+    content: " ";
+    display: table;
+}
+
+.flex--center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

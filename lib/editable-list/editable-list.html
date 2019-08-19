@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Editable List</title>
-    <meta charset="UTF-8">
+  <title>Editable List</title>
+  <meta charset="UTF-8">
 </head>
 <body>
-<template>
+  <template>
     <form>
-        <label>
-            <!--
-            This slot defines the content that should appear in the label
-            -->
-            <slot name="input-label">Add an item</slot>
-            <input type="text" name="item_text" required/>
-        </label>
-        <button type="submit">
-            <!--
-            This slot defines the content that should appear in the add button
-            -->
-            <slot name="add-button">Add</slot>
-        </button>
+      <label>
+        <!--
+        This slot defines the content that should appear in the label
+        -->
+        <slot name="input-label">Add an item</slot>
+        <input name="item_text" required type="text" />
+      </label>
+      <button type="submit">
+        <!--
+        This slot defines the content that should appear in the add button
+        -->
+        <slot name="add-button">Add</slot>
+      </button>
     </form>
 
     <ul></ul>
-</template>
+  </template>
 </body>
 </html>

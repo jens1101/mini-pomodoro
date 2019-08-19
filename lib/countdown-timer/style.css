@@ -16,23 +16,6 @@
     justify-content: center;
 }
 
-#start-countdown,
-#stop-countdown {
-    padding: 0.2rem 0.5rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    color: var(--primary-text-color);
-    border: none;
-    border-radius: 1rem;
-    outline: none;
-    background: var(--secondary-color);
-}
-
-#start-countdown:active,
-#stop-countdown:active {
-    background: var(--secondary-light-color);
-}
-
 #start-countdown {
     margin-right: var(--default-padding);
 }

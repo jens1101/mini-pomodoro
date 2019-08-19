@@ -1,3 +1,5 @@
+/* # Layout */
+/* ## Container */
 /* Generic responsive container for content */
 .container {
     box-sizing: border-box;
@@ -9,26 +11,87 @@
     padding-left: var(--default-padding);
 }
 
+/* ## Grid Helpers */
 .grid--auto-fit {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
     grid-column-gap: var(--default-padding);
 }
 
-.aspect-ratio-1to1::before {
+/* ## Aspect Ratio Helpers */
+.aspect-ratio::before {
     float: left;
-    padding-bottom: 100%;
     content: "";
 }
 
-.aspect-ratio-1to1::after {
+.aspect-ratio::after {
     display: table;
     clear: left;
     content: " ";
 }
 
-.flex--center {
+/* Force 1-to-1 Aspect Ratio on Element */
+.aspect-ratio--1to1::before {
+    padding-bottom: 100%;
+}
+
+/* ## Flex Helpers */
+.flex {
     display: flex;
+}
+
+/* Horizontally and vertically center content */
+.flex--center {
     align-items: center;
     justify-content: center;
+}
+
+/* # Button */
+.btn {
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    outline: none;
+}
+
+/* ## Button Primary */
+.btn--primary {
+    color: var(--secondary-text-color);
+    border-color: var(--secondary-color);
+    background: var(--secondary-color);
+}
+
+.btn--primary:active {
+    background: var(--secondary-light-color);
+}
+
+/* # Forms */
+/* ## Input Fields */
+.std-input {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--secondary-color);
+    outline: none;
+}
+
+.std-input:focus {
+    box-shadow: 0 0 0.5rem 0 var(--secondary-light-color);
+}
+
+.form-group__std-input {
+    width: 100%;
+}
+
+/* ## Input Groups */
+.input-group {
+    display: flex;
+}
+
+.input-group > *:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.input-group > *:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
 }

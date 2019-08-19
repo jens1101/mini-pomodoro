@@ -1,12 +1,12 @@
 /* Generic responsive container for content */
 .container {
+    box-sizing: border-box;
     width: var(--container-width);
     max-width: var(--max-container-width);
-    padding-left: var(--default-padding);
-    padding-right: var(--default-padding);
-    margin-left: auto;
     margin-right: auto;
-    box-sizing: border-box;
+    margin-left: auto;
+    padding-right: var(--default-padding);
+    padding-left: var(--default-padding);
 }
 
 .grid--auto-fit {
@@ -16,19 +16,19 @@
 }
 
 .aspect-ratio-1to1::before {
-    content: "";
     float: left;
     padding-bottom: 100%;
+    content: "";
 }
 
 .aspect-ratio-1to1::after {
+    display: table;
     clear: left;
     content: " ";
-    display: table;
 }
 
 .flex--center {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }

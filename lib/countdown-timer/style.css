@@ -4,10 +4,10 @@
 }
 
 .countdown-timer--round {
-    border: 0.5rem solid var(--secondary-color);
-    border-radius: 50%;
     display: inline-flex;
     padding: var(--default-padding);
+    border: 0.5rem solid var(--secondary-color);
+    border-radius: 50%;
 }
 
 .countdown-timer__content {
@@ -18,14 +18,14 @@
 
 #start-countdown,
 #stop-countdown {
-    color: var(--primary-text-color);
-    background: var(--secondary-color);
-    border: none;
-    cursor: pointer;
-    border-radius: 1rem;
     padding: 0.2rem 0.5rem;
+    cursor: pointer;
     text-transform: uppercase;
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 1rem;
     outline: none;
+    background: var(--secondary-color);
 }
 
 #start-countdown:active,

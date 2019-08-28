@@ -67,6 +67,25 @@
     background: var(--secondary-light-color);
 }
 
+/* ## Button Inline */
+.btn--inline {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline;
+    padding: 0;
+    transition: var(--text-shadow-transition), opacity 0.3s;
+    opacity: 0.5;
+    color: var(--primary-text-color);
+    border: none;
+    background: none;
+    text-shadow: var(--text-shadow-level-1);
+}
+
+.btn--inline:hover {
+    opacity: 0.8;
+    text-shadow: var(--text-shadow-level-2);
+}
+
 /* # Forms */
 /* ## Input Fields */
 .std-input {

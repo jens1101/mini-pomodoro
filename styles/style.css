@@ -10,7 +10,7 @@
     --primary-text-color: #fff;
     --secondary-text-color: #fff;
 
-    /* Shadows */
+    /* Box Shadows */
     --shadow-transition: box-shadow 0.3s cubic-bezier(.25, .8, .25, 1);
 
     --shadow-1dp: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
@@ -34,6 +34,31 @@
     --shadow-14dp: 0 7px 9px -4px rgba(0, 0, 0, .2), 0 14px 21px 2px rgba(0, 0, 0, .14), 0 5px 26px 4px rgba(0, 0, 0, .12);
     --shadow-15dp: 0 8px 9px -5px rgba(0, 0, 0, .2), 0 15px 22px 2px rgba(0, 0, 0, .14), 0 6px 28px 5px rgba(0, 0, 0, .12);
     --shadow-16dp: 0 8px 10px -5px rgba(0, 0, 0, .2), 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12);
+
+    /* Text Shadows*/
+    --text-shadow-transition: text-shadow 0.3s cubic-bezier(.25, .8, .25, 1);
+
+    --text-shadow-1dp: 0 1px 3px rgba(0, 0, 0, .2), 0 1px 1px rgba(0, 0, 0, .14), 0 2px 1px rgba(0, 0, 0, .12);
+    --text-shadow-level-1: var(--text-shadow-1dp);
+    --text-shadow-2dp: 0 1px 5px rgba(0, 0, 0, .2), 0 2px 2px rgba(0, 0, 0, .14), 0 3px 1px rgba(0, 0, 0, .12);
+    --text-shadow-3dp: 0 1px 8px rgba(0, 0, 0, .2), 0 3px 4px rgba(0, 0, 0, .14), 0 3px 3px rgba(0, 0, 0, .12);
+    --text-shadow-4dp: 0 2px 4px rgba(0, 0, 0, .2), 0 4px 5px rgba(0, 0, 0, .14), 0 1px 10px rgba(0, 0, 0, .12);
+    --text-shadow-level-2: var(--text-shadow-4dp);
+    --text-shadow-5dp: 0 3px 5px rgba(0, 0, 0, .2), 0 5px 8px rgba(0, 0, 0, .14), 0 1px 14px rgba(0, 0, 0, .12);
+    --text-shadow-6dp: 0 3px 5px rgba(0, 0, 0, .2), 0 6px 10px rgba(0, 0, 0, .14), 0 1px 18px rgba(0, 0, 0, .12);
+    --text-shadow-7dp: 0 4px 5px rgba(0, 0, 0, .2), 0 7px 10px rgba(0, 0, 0, .14), 0 2px 16px rgba(0, 0, 0, .12);
+    --text-shadow-level-3: var(--text-shadow-7dp);
+    --text-shadow-8dp: 0 5px 5px rgba(0, 0, 0, .2), 0 8px 10px rgba(0, 0, 0, .14), 0 3px 14px rgba(0, 0, 0, .12);
+    --text-shadow-9dp: 0 5px 6px rgba(0, 0, 0, .2), 0 9px 12px rgba(0, 0, 0, .14), 0 3px 16px rgba(0, 0, 0, .12);
+    --text-shadow-10dp: 0 6px 6px rgba(0, 0, 0, .2), 0 10px 14px rgba(0, 0, 0, .14), 0 4px 18px rgba(0, 0, 0, .12);
+    --text-shadow-level-4: var(--text-shadow-10dp);
+    --text-shadow-11dp: 0 6px 7px rgba(0, 0, 0, .2), 0 11px 15px rgba(0, 0, 0, .14), 0 4px 20px rgba(0, 0, 0, .12);
+    --text-shadow-12dp: 0 7px 8px rgba(0, 0, 0, .2), 0 12px 17px rgba(0, 0, 0, .14), 0 5px 22px rgba(0, 0, 0, .12);
+    --text-shadow-13dp: 0 7px 8px rgba(0, 0, 0, .2), 0 13px 19px rgba(0, 0, 0, .14), 0 5px 24px rgba(0, 0, 0, .12);
+    --text-shadow-level-5: var(--text-shadow-13dp);
+    --text-shadow-14dp: 0 7px 9px rgba(0, 0, 0, .2), 0 14px 21px rgba(0, 0, 0, .14), 0 5px 26px rgba(0, 0, 0, .12);
+    --text-shadow-15dp: 0 8px 9px rgba(0, 0, 0, .2), 0 15px 22px rgba(0, 0, 0, .14), 0 6px 28px rgba(0, 0, 0, .12);
+    --text-shadow-16dp: 0 8px 10px rgba(0, 0, 0, .2), 0 16px 24px rgba(0, 0, 0, .14), 0 6px 30px rgba(0, 0, 0, .12);
 
     /* Miscellaneous */
     --default-padding: 1rem;

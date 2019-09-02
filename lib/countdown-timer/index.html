@@ -3,13 +3,25 @@
 <head>
   <title>CountdownTimer</title>
   <meta charset="UTF-8">
-  <link href="./lib/countdown-timer/style.css" rel="stylesheet" />
+  <base href="/" />
+  <link href="styles/layout.css" rel="stylesheet" />
+  <link href="lib/countdown-timer/style.css" rel="stylesheet" />
 </head>
 <body>
   <template>
-    <div id="time-display">00:00:00</div>
-    <button id="start-countdown" type="button">Start</button>
-    <button id="stop-countdown" type="button">Stop</button>
+    <div class="countdown-timer--round aspect-ratio aspect-ratio--1to1">
+      <div class="countdown-timer__content">
+        <div id="time-display">00:00:00</div>
+        <div class="flex flex--center">
+          <button class="btn btn--primary" id="start-countdown" type="button">
+            Start
+          </button>
+          <button class="btn btn--primary" id="stop-countdown" type="button">
+            Stop
+          </button>
+        </div>
+      </div>
+    </div>
   </template>
 </body>
 </html>

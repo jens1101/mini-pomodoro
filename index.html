@@ -7,23 +7,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/responsive.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
   <link rel="icon" type="image/png" href="assets/images/hourglass-icon.png" />
   <script src="main.js" type="module"></script>
 </head>
 
 <body>
-  <main>
-    <h1>Mini Pomodoro</h1>
-    <section>
-      <h2>Countdown Timer</h2>
-      <countdown-timer id="countdown"></countdown-timer>
-    </section>
+  <header class="header">
+    <div class="container">
+      <h1 class="header__title">Mini Pomodoro</h1>
+    </div>
+  </header>
 
-    <section>
-      <h2>Distractions</h2>
-      <editable-list id="distractions"></editable-list>
-    </section>
+  <main class="main container">
+    <div class="grid--auto-fit">
+      <section>
+        <h2>Countdown Timer</h2>
+        <countdown-timer id="countdown"></countdown-timer>
+      </section>
+
+      <section>
+        <h2>Distractions</h2>
+        <editable-list id="distractions"></editable-list>
+      </section>
+    </div>
   </main>
 </body>
 

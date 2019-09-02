@@ -1,0 +1,116 @@
+/* # Layout */
+/* ## Container */
+/* Generic responsive container for content */
+.container {
+    box-sizing: border-box;
+    width: var(--container-width);
+    max-width: var(--max-container-width);
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: var(--default-padding);
+    padding-left: var(--default-padding);
+}
+
+/* ## Grid Helpers */
+.grid--auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
+    grid-column-gap: var(--default-padding);
+}
+
+/* ## Aspect Ratio Helpers */
+.aspect-ratio::before {
+    float: left;
+    content: "";
+}
+
+.aspect-ratio::after {
+    display: table;
+    clear: left;
+    content: " ";
+}
+
+/* Force 1-to-1 Aspect Ratio on Element */
+.aspect-ratio--1to1::before {
+    padding-bottom: 100%;
+}
+
+/* ## Flex Helpers */
+.flex {
+    display: flex;
+}
+
+/* Horizontally and vertically center content */
+.flex--center {
+    align-items: center;
+    justify-content: center;
+}
+
+/* # Button */
+.btn {
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    outline: none;
+}
+
+/* ## Button Primary */
+.btn--primary {
+    color: var(--secondary-text-color);
+    border-color: var(--secondary-color);
+    background: var(--secondary-color);
+}
+
+.btn--primary:active {
+    background: var(--secondary-light-color);
+}
+
+/* ## Button Inline */
+.btn--inline {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline;
+    padding: 0;
+    transition: var(--text-shadow-transition), opacity 0.3s;
+    opacity: 0.5;
+    color: var(--primary-text-color);
+    border: none;
+    background: none;
+    text-shadow: var(--text-shadow-level-1);
+}
+
+.btn--inline:hover {
+    opacity: 0.8;
+    text-shadow: var(--text-shadow-level-2);
+}
+
+/* # Forms */
+/* ## Input Fields */
+.std-input {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--secondary-color);
+    outline: none;
+}
+
+.std-input:focus {
+    box-shadow: 0 0 0.5rem 0 var(--secondary-light-color);
+}
+
+.form-group__std-input {
+    width: 100%;
+}
+
+/* ## Input Groups */
+.input-group {
+    display: flex;
+}
+
+.input-group > *:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.input-group > *:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
+}

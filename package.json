@@ -2,13 +2,12 @@
   "name": "mini-pomodoro",
   "version": "1.1.0",
   "description": "",
-  "main": "script.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently serve \"open-cli http://localhost:5000/\""
+    "test": "standard",
+    "test:watch": "karma start --auto-watch=true --single-run=false",
+    "start:build": "es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
+    "build": "rimraf dist && rollup -c rollup.config.js",
+    "start": "es-dev-server --app-index index.html --node-resolve --open --watch"
   },
   "repository": {
     "type": "git",
@@ -20,12 +19,18 @@
     "url": "https://github.com/jens1101/mini-pomodoro/issues"
   },
   "homepage": "https://github.com/jens1101/mini-pomodoro#readme",
+  "dependencies": {
+    "lit-element": "^2.3.1",
+    "lit-html": "^1.2.1"
+  },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "concurrently": "^4.1.2",
-    "open-cli": "^5.0.0",
-    "serve": "^11.1.0",
-    "standard": "^12.0.1"
+    "@open-wc/building-rollup": "^0.22.12",
+    "babel-eslint": "^10.1.0",
+    "deepmerge": "^4.2.2",
+    "es-dev-server": "^1.46.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.6.0",
+    "standard": "^14.3.3"
   },
   "standard": {
     "parser": "babel-eslint"

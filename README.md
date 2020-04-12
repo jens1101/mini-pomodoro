@@ -1,12 +1,30 @@
-# About
-This is a small pomodoro app that I use while developing. This is also a playground for me to mess around with the latest web standards and Github features.
+<p align="center">
+  <img width="200" src="https://open-wc.org/hero.png"></img>
+</p>
 
-# Features
-- A countdown timer that runs for 25min once you hit "Start". Once it finished it will alter the user with a sound and a notification.
-- You can stop the countdown at any time by hitting "Stop"
-- You can restart the countdown while it is running by hitting the "Start" button again
-- You can log distractions. You do this via the provided form.
-- You can remove logged distractions via the <code>&times;</code> button on each distraction.
+## Open-wc Starter App
 
-# Requirements
-To run this project yourself all you need is a simple HTTP server.
+[![Built with open-wc recommendations](https://img.shields.io/badge/built%20with-open--wc-blue.svg)](https://github.com/open-wc)
+
+## Quickstart
+
+To get started:
+
+```sh
+npm init @open-wc
+# requires node 10 & npm 6 or higher
+```
+
+## Scripts
+
+- `start` runs your app for development, reloading on file changes
+- `start:build` runs your app after it has been built using the build command
+- `build` builds your app and outputs it in your `dist` directory
+- `test` runs your test suite with Karma
+- `lint` runs the linter for your project
+
+## Tooling configs
+
+For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
+
+If you customize the configuration a lot, you can consider moving them to individual files.

@@ -1,39 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <title>Mini Pomodoro</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="Put your description here.">
+  <base href="/">
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <link rel="stylesheet" href="styles/style.css" />
-  <link rel="stylesheet" href="styles/responsive.css" />
-  <link rel="stylesheet" href="styles/layout.css" />
-  <link rel="icon" type="image/png" href="assets/images/hourglass-icon.png" />
-  <script src="main.js" type="module"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ededed;
+    }
+  </style>
+  <title>mini-pomodoro</title>
 </head>
 
 <body>
-  <header class="header">
-    <div class="container">
-      <h1 class="header__title">Mini Pomodoro</h1>
-    </div>
-  </header>
+  <mini-pomodoro></mini-pomodoro>
 
-  <main class="main container">
-    <div class="grid--auto-fit">
-      <section>
-        <h2>Countdown Timer</h2>
-        <countdown-timer id="countdown"></countdown-timer>
-      </section>
-
-      <section>
-        <h2>Distractions</h2>
-        <editable-list id="distractions"></editable-list>
-      </section>
-    </div>
-  </main>
+  <script type="module" src="./src/mini-pomodoro.js"></script>
 </body>
 
 </html>

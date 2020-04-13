@@ -40,9 +40,9 @@ export class CountdownTimerElement extends LitElement {
   render () {
     return template(this.#displayDuration, {
       startButtonText: this.#startButtonText,
-      startCountdownCallback: this.startCountdown,
+      startCountdownCallback: () => this.startCountdown(),
       stopButtonText: this.#stopButtonText,
-      stopCountdownCallback: this.stopCountdown
+      stopCountdownCallback: () => this.stopCountdown()
     })
   }
 

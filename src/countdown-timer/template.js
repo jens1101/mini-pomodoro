@@ -24,22 +24,21 @@ export function template (displayDuration, options = {}) {
   const stopButtonText = options.stopButtonText || 'Stop'
 
   return html`
-    <div class="countdown-timer--round aspect-ratio aspect-ratio--1to1">
-      <div class="countdown-timer__content">
-        <div >${displayDuration}</div>
-        <div class="flex flex--center">
-          <button class="btn btn--primary"
-                  @click="${options.startCountdownCallback}"
-                  type="button">
-            ${startButtonText}
-          </button>
-          <button class="btn btn--primary"
-                  @click="${options.stopCountdownCallback}"
-                  type="button">
-            ${stopButtonText}
-          </button>
-        </div>
-      </div>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.css"
+          rel="stylesheet" />
+
+    <div>${displayDuration}</div>
+    <div>
+      <button class="btn btn-primary"
+              @click="${options.startCountdownCallback}"
+              type="button">
+        ${startButtonText}
+      </button>
+      <button class="btn btn-primary"
+              @click="${options.stopCountdownCallback}"
+              type="button">
+        ${stopButtonText}
+      </button>
     </div>
   `
 }

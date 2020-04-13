@@ -1,11 +1,6 @@
 import { html } from 'lit-html'
 
 /**
- * @callback EventCallback
- * @param {Event} event
- */
-
-/**
  * @typedef {Object} CountdownTimerTemplateOptions
  * @property {string} [startButtonText]
  * @property {EventCallback} [startCountdownCallback]
@@ -13,6 +8,10 @@ import { html } from 'lit-html'
  * @property {EventCallback} [stopCountdownCallback]
  */
 
+// TODO: this should simply accept the duration in milliseconds. The conversion
+//  to string should happen here.
+// TODO: this should also accept the total duration so that we can display a
+//  progress bar
 /**
  *
  * @param {string} displayDuration

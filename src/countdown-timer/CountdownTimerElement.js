@@ -4,6 +4,9 @@ import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from '../app/bootstrap.js'
 
 export class CountdownTimerElement extends LitElement {
+  // TODO: make the total duration a property of this element
+  // TODO: rename `displayDuration` to current duration
+
   /**
    * The countdown timer that is responsible for the actual timer logic.
    * @type {CountdownTimer}

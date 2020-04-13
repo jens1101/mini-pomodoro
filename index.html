@@ -11,16 +11,29 @@
   <title>Mini Pomodoro</title>
   <!-- TODO: make all the JS code as pure as possible. Mark them as having no
         side effects -->
-  <script src="src/countdown-timer/main.js" type="module"></script>
 
   <script type="module">
-    import { bootstrapStyleSheet } from './src/app/bootstrap.js'
+    import './src/countdown-timer/main.js'
+    import './src/editable-list/main.js'
+    import {
+      bootstrapLoadingPromise,
+      bootstrapStyleSheet
+    } from './src/app/bootstrap.js'
 
     document.adoptedStyleSheets = [bootstrapStyleSheet]
+
+    // Hide the content of the web page until the CSS had loaded
+    bootstrapLoadingPromise.then(() => {
+      document.body.removeAttribute('hidden')
+    })
   </script>
 </head>
 
-<body>
-  <countdown-timer></countdown-timer>
+<body hidden>
+  <main class="container">
+    <countdown-timer></countdown-timer>
+
+    <editable-list></editable-list>
+  </main>
 </body>
 </html>

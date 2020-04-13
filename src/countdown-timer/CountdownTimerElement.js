@@ -1,6 +1,7 @@
 import { LitElement } from 'lit-element'
 import { template } from './template.js'
 import { CountdownTimer } from './CountdownTimer.js'
+import { bootstrapCssResult } from '../app/bootstrap.js'
 
 export class CountdownTimerElement extends LitElement {
   /**
@@ -11,6 +12,10 @@ export class CountdownTimerElement extends LitElement {
   #displayDuration = CountdownTimerElement.durationToDisplayString(0)
   #startButtonText = 'Start'
   #stopButtonText = 'Stop'
+
+  static get styles () {
+    return bootstrapCssResult
+  }
 
   static durationToDisplayString (durationMs) {
     const durationSeconds = durationMs / 1000

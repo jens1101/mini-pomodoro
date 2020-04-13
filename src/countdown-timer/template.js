@@ -24,9 +24,6 @@ export function template (displayDuration, options = {}) {
   const stopButtonText = options.stopButtonText || 'Stop'
 
   return html`
-    <link href="node_modules/bootstrap/dist/css/bootstrap.css"
-          rel="stylesheet" />
-
     <div>${displayDuration}</div>
     <div>
       <button class="btn btn-primary"

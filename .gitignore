@@ -30,6 +30,7 @@ Temporary Items
 # Node and NPM
 ## Dependency directories
 node_modules/
+web_modules/
 
 ## Log files
 npm-debug.log

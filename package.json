@@ -6,6 +6,7 @@
     "test": "standard",
     "build": "rimraf dist && rollup -c rollup.config.js",
     "start": "es-dev-server --open --watch",
+    "start:build": "es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "postinstall": "snowpack"
   },
   "repository": {

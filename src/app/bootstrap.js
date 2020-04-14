@@ -3,8 +3,7 @@ import { css } from '../../web_modules/lit-element.js'
 // TODO: this might not work once the project is built. I should maybe consider
 //  using a CDN until CSS modules are a thing
 const bootstrapUrl = new URL(
-  '../../node_modules/bootstrap/dist/css/bootstrap.css',
-  import.meta.url)
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css')
 
 const bootstrapStyleSheet = new window.CSSStyleSheet()
 

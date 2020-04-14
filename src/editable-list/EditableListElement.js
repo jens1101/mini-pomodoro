@@ -19,12 +19,6 @@ export class EditableListElement extends LitElement {
     return [bootstrapCssResult]
   }
 
-  render () {
-    return template(this.items, {
-      addItemCallback: this.addItemCallback
-    })
-  }
-
   /**
    * @param {Event} event
    */
@@ -32,6 +26,7 @@ export class EditableListElement extends LitElement {
     event.preventDefault()
 
     const form = event.target
+    // noinspection JSUnresolvedVariable
     const input = form.elements.itemText
 
     this.addListItem(input.value)
@@ -55,5 +50,11 @@ export class EditableListElement extends LitElement {
       bubbles: true
     })
     this.dispatchEvent(event)
+  }
+
+  render () {
+    return template(this.items, {
+      addItemCallback: event => this.addItemCallback(event)
+    })
   }
 }

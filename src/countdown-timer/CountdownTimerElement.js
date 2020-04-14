@@ -1,104 +1,70 @@
 import { LitElement } from '../../web_modules/lit-element.js'
-import { template } from './template.js'
-import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from '../app/bootstrap.js'
+import { CountdownTimer } from './CountdownTimer.js'
+import { template } from './template.js'
 
 export class CountdownTimerElement extends LitElement {
-  // TODO: make the total duration a property of this element
-  // TODO: rename `displayDuration` to current duration
+  constructor () {
+    super()
 
-  /**
-   * The countdown timer that is responsible for the actual timer logic.
-   * @type {CountdownTimer}
-   */
-  #countdownTimer = new CountdownTimer()
-  #displayDuration = CountdownTimerElement.durationToDisplayString(0)
-  #startButtonText = 'Start'
-  #stopButtonText = 'Stop'
+    /**
+     * The countdown timer that is responsible for the actual timer logic.
+     * @type {CountdownTimer}
+     */
+    this._countdownTimer = new CountdownTimer()
+
+    this.totalDurationMs = CountdownTimer.DEFAULT_DURATION_MS
+    this.currentDurationMs = 0
+    this.startButtonText = 'Start'
+    this.stopButtonText = 'Stop'
+  }
+
+  static get properties () {
+    return {
+      totalDurationMs: { type: Number },
+      currentDurationMs: { attribute: false },
+      startButtonText: { type: String },
+      stopButtonText: { type: String }
+    }
+  }
 
   static get styles () {
     return bootstrapCssResult
-  }
-
-  static durationToDisplayString (durationMs) {
-    const durationSeconds = durationMs / 1000
-    const seconds = `${Math.floor(durationSeconds % 60)}`.padStart(2, '0')
-
-    const durationMinutes = durationSeconds / 60
-    const minutes = `${Math.floor(durationMinutes % 60)}`.padStart(2, '0')
-
-    const hours = `${Math.floor(minutes / 60)}`.padStart(2, '0')
-
-    return `${hours}:${minutes}:${seconds}`
-  }
-
-  setDisplayDuration (durationMs) {
-    const displayDuration =
-      CountdownTimerElement.durationToDisplayString(durationMs)
-
-    if (this.#displayDuration === displayDuration) {
-      return
-    }
-
-    this.#displayDuration = displayDuration
-    // noinspection JSIgnoredPromiseFromCall
-    this.requestUpdate()
-  }
-
-  render () {
-    return template(this.#displayDuration, {
-      startButtonText: this.#startButtonText,
-      startCountdownCallback: () => this.startCountdown(),
-      stopButtonText: this.#stopButtonText,
-      stopCountdownCallback: () => this.stopCountdown()
-    })
-  }
-
-  /**
-   * Dispatches the "countdownstart" event on this element. This is called when
-   * the user starts the countdown timer. The start timestamp is sent as
-   * additional details.
-   * @param {number} startTimestamp The timestamp when the countdown timer
-   * started.
-   */
-  #dispatchStartEvent = (startTimestamp) => {
-    const event = new window.CustomEvent('countdownstart', {
-      detail: { startTimestamp }
-    })
-    this.dispatchEvent(event)
   }
 
   /**
    * This is called once this countdown timer has completed. Displays 00:00:00
    * for the countdown time and dispatches the "countdowncomplete" event on this
    * element.
+   * @private
    */
-  #countdownComplete = () => {
-    this.setDisplayDuration(0)
+  _countdownComplete () {
+    this.currentDurationMs = 0
     this.dispatchEvent(new window.CustomEvent('countdowncomplete'))
   }
 
   /**
-   * Starts the countdown. This first stops any existing countdown and then
-   * stats it anew. This dispatches a custom event on this element called
-   * "countdownstart".
+   * Dispatches the "countdownstart" event on this element. This is called when
+   * the user starts the countdown timer. The start timestamp is sent as
+   * additional details.
+   * @private
+   * @param {number} startTimestamp The timestamp when the countdown timer
+   * started.
    */
-  startCountdown () {
-    this.#countdownTimer.stopCountdown()
-    this.#countdownTimer.startCountdown(this.#dispatchStartEvent,
-      this.#countdownComplete, timeLeftMs => this.setDisplayDuration(timeLeftMs))
+  _dispatchStartEvent (startTimestamp) {
+    const event = new window.CustomEvent('countdownstart', {
+      detail: { startTimestamp }
+    })
+    this.dispatchEvent(event)
   }
 
-  /**
-   * Stops the current countdown. This sets the timer back to zero and cancels
-   * any existing timeout. This dispatches a custom event on this element
-   * called "countdownstop".
-   */
-  stopCountdown () {
-    this.#countdownTimer.stopCountdown()
-
-    this.setDisplayDuration(0)
-    this.dispatchEvent(new window.CustomEvent('countdownstop'))
+  render () {
+    return template(this.currentDurationMs, {
+      startButtonText: this.startButtonText,
+      startCountdownCallback: () => this.startCountdown(),
+      stopButtonText: this.stopButtonText,
+      stopCountdownCallback: () => this.stopCountdown()
+    })
   }
 
   /**
@@ -109,7 +75,32 @@ export class CountdownTimerElement extends LitElement {
    * timer was started.
    */
   resumeCountdown (startTimestamp) {
-    this.#countdownTimer.resumeCountdown(startTimestamp,
-      this.#countdownComplete, timeLeftMs => this.setDisplayDuration(timeLeftMs))
+    this._countdownTimer.resumeCountdown(startTimestamp,
+      this._countdownComplete,
+      timeLeftMs => { this.currentDurationMs = timeLeftMs })
+  }
+
+  /**
+   * Starts the countdown. This first stops any existing countdown and then
+   * stats it anew. This dispatches a custom event on this element called
+   * "countdownstart".
+   */
+  startCountdown () {
+    this._countdownTimer.stopCountdown()
+    this._countdownTimer.startCountdown(this._dispatchStartEvent,
+      this._countdownComplete,
+      timeLeftMs => { this.currentDurationMs = timeLeftMs })
+  }
+
+  /**
+   * Stops the current countdown. This sets the timer back to zero and cancels
+   * any existing timeout. This dispatches a custom event on this element
+   * called "countdownstop".
+   */
+  stopCountdown () {
+    this._countdownTimer.stopCountdown()
+
+    this.currentDurationMs = 0
+    this.dispatchEvent(new window.CustomEvent('countdownstop'))
   }
 }

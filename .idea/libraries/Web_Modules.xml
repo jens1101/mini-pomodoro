@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Web Modules" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/web_modules" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/web_modules" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

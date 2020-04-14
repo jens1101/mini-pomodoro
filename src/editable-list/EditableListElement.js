@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element'
+import { LitElement } from '../../web_modules/lit-element.js'
 import { bootstrapCssResult } from '../app/bootstrap.js'
 import { template } from './template.js'
 

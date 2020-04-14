@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element'
+import { LitElement } from '../../web_modules/lit-element.js'
 import { template } from './template.js'
 import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from '../app/bootstrap.js'

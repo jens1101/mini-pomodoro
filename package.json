@@ -4,10 +4,9 @@
   "description": "",
   "scripts": {
     "test": "standard",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "start:build": "es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "build": "rimraf dist && rollup -c rollup.config.js",
-    "start": "es-dev-server --app-index index.html --node-resolve --open --watch"
+    "start": "es-dev-server --open --watch",
+    "postinstall": "snowpack"
   },
   "repository": {
     "type": "git",
@@ -31,6 +30,7 @@
     "es-dev-server": "^1.46.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.6.0",
+    "snowpack": "^1.6.0",
     "standard": "^14.3.3"
   },
   "standard": {

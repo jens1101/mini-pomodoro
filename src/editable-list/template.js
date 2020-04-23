@@ -31,7 +31,7 @@ export function template (listItems, options) {
                name="itemText"
                required>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit">
+          <button class="btn btn-secondary" type="submit">
             ${addButtonText}
           </button>
         </div>

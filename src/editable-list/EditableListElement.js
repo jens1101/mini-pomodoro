@@ -1,5 +1,6 @@
 import { LitElement } from '../../web_modules/lit-element.js'
 import { bootstrapCssResult } from '../app/bootstrap.js'
+import { style } from './style.js'
 import { template } from './template.js'
 
 export class EditableListElement extends LitElement {
@@ -20,7 +21,7 @@ export class EditableListElement extends LitElement {
   }
 
   static get styles () {
-    return [bootstrapCssResult]
+    return [bootstrapCssResult, style]
   }
 
   /**

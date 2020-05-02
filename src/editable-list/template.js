@@ -19,8 +19,10 @@ export function template (listItems, options) {
 
   // TODO: implement the remove-li component
   const listItemElements = listItems.map(item => html`
-    <li is="removable-li">${item}</li>
-  `)
+    <li class="list-group-item list-group-item--no-background"
+        is="removable-li">
+      ${item}
+    </li>`)
 
   return html`
     <form @submit="${options.addItemCallback}">
@@ -38,6 +40,8 @@ export function template (listItems, options) {
       </div>
     </form>
 
-    <ul>${listItemElements}</ul>
+    <ul class="list-group list-group-flush">
+      ${listItemElements}
+    </ul>
   `
 }

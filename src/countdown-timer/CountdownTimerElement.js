@@ -59,7 +59,7 @@ export class CountdownTimerElement extends LitElement {
   }
 
   render () {
-    return template(this.currentDurationMs, {
+    return template(this.currentDurationMs, this.totalDurationMs, {
       startButtonText: this.startButtonText,
       startCountdownCallback: () => this.startCountdown(),
       stopButtonText: this.stopButtonText,

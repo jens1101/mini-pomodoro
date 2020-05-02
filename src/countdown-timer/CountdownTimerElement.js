@@ -76,7 +76,7 @@ export class CountdownTimerElement extends LitElement {
    */
   resumeCountdown (startTimestamp) {
     this._countdownTimer.resumeCountdown(startTimestamp,
-      this._countdownComplete,
+      () => this._countdownComplete(),
       timeLeftMs => { this.currentDurationMs = timeLeftMs })
   }
 
@@ -87,8 +87,9 @@ export class CountdownTimerElement extends LitElement {
    */
   startCountdown () {
     this._countdownTimer.stopCountdown()
-    this._countdownTimer.startCountdown(this._dispatchStartEvent,
-      this._countdownComplete,
+    this._countdownTimer.startCountdown(
+      (timestamp) => this._dispatchStartEvent(timestamp),
+      () => this._countdownComplete(),
       timeLeftMs => { this.currentDurationMs = timeLeftMs })
   }
 

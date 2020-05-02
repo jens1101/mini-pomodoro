@@ -7,11 +7,15 @@ export class EditableListElement extends LitElement {
     super()
 
     this.items = []
+    this.buttonText = 'Add'
+    this.placeholder = 'Add an item'
   }
 
   static get properties () {
     return {
-      items: { type: Array }
+      items: { type: Array },
+      buttonText: { type: String },
+      placeholder: { type: String }
     }
   }
 
@@ -54,7 +58,9 @@ export class EditableListElement extends LitElement {
 
   render () {
     return template(this.items, {
-      addItemCallback: event => this.addItemCallback(event)
+      addItemCallback: event => this.addItemCallback(event),
+      addButtonText: this.buttonText,
+      itemTextPlaceholder: this.placeholder
     })
   }
 }

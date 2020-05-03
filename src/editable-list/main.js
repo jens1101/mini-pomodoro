@@ -1,4 +1,7 @@
 import { EditableListElement } from './EditableListElement.js'
+import { RemovableListItem } from './RemovableListItem.js'
 
 window.customElements.define('editable-list', EditableListElement)
-// TODO: add the removable-li component
+window.customElements.define('removable-li', RemovableListItem, {
+  extends: 'li'
+})

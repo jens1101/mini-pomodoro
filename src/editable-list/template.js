@@ -16,12 +16,10 @@ import { html } from '../../web_modules/lit-html.js'
 export function template (listItems, options) {
   const itemTextPlaceholder = options.itemTextPlaceholder || 'Add an item'
   const addButtonText = options.addButtonText || 'Add'
-
-  // TODO: implement the remove-li component
   const listItemElements = listItems.map(item => html`
-    <li class="list-group-item list-group-item--no-background"
+    <li class="list-group-item d-flex align-items-center"
         is="removable-li">
-      ${item}
+      <span class="flex-grow-1">${item}</span>
     </li>`)
 
   return html`
@@ -33,7 +31,7 @@ export function template (listItems, options) {
                name="itemText"
                required>
         <div class="input-group-append">
-          <button class="btn btn-secondary" type="submit">
+          <button class="btn btn-primary" type="submit">
             ${addButtonText}
           </button>
         </div>

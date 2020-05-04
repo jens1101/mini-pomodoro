@@ -25,10 +25,12 @@ export function template (listItems, options) {
   return html`
     <form @submit="${options.addItemCallback}">
       <div class="input-group">
+        <label for="itemText" class="sr-only">${itemTextPlaceholder}</label>
         <input type="text"
                class="form-control"
                placeholder="${itemTextPlaceholder}"
                name="itemText"
+               id="itemText"
                required>
         <div class="input-group-append">
           <button class="btn btn-primary" type="submit">

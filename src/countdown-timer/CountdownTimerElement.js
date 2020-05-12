@@ -40,12 +40,14 @@ export class CountdownTimerElement extends LitElement {
    */
   _countdownComplete () {
     this.currentDurationMs = 0
-    this.dispatchEvent(new window.CustomEvent('countdowncomplete'))
+    this.dispatchEvent(new window.CustomEvent('countdowncomplete', {
+      detail: { id: this.id }
+    }))
   }
 
   /**
    * Dispatches the "countdownstart" event on this element. This is called when
-   * the user starts the countdown timer. The start timestamp is sent as
+   * the user starts the countdown timer. The start timestamp and ID are sent as
    * additional details.
    * @private
    * @param {number} startTimestamp The timestamp when the countdown timer
@@ -53,7 +55,7 @@ export class CountdownTimerElement extends LitElement {
    */
   _dispatchStartEvent (startTimestamp) {
     const event = new window.CustomEvent('countdownstart', {
-      detail: { startTimestamp }
+      detail: { id: this.id, startTimestamp }
     })
     this.dispatchEvent(event)
   }
@@ -102,6 +104,8 @@ export class CountdownTimerElement extends LitElement {
     this._countdownTimer.stopCountdown()
 
     this.currentDurationMs = 0
-    this.dispatchEvent(new window.CustomEvent('countdownstop'))
+    this.dispatchEvent(new window.CustomEvent('countdownstop', {
+      detail: { id: this.id }
+    }))
   }
 }

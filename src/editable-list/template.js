@@ -5,6 +5,7 @@ import { html } from '../../web_modules/lit-html.js'
  * @property {string} [itemTextPlaceholder]
  * @property {string} [addButtonText]
  * @property {EventCallback} [addItemCallback]
+ * @property {CustomEventCallback} [removeItemCallback]
  */
 
 /**
@@ -18,7 +19,8 @@ export function template (listItems, options) {
   const addButtonText = options.addButtonText || 'Add'
   const listItemElements = listItems.map(item => html`
     <li class="list-group-item d-flex align-items-center"
-        is="removable-li">
+        is="removable-li"
+        @liremoved="${options.removeItemCallback}">
       <span class="flex-grow-1">${item}</span>
     </li>`)
 

@@ -6,6 +6,8 @@
 <!-- TODO: add html validation (https://www.npmjs.com/package/html-validator)
       tests -->
 <!-- TODO: add favicon -->
+<!-- TODO: add idb functionality -->
+<!-- TODO: replace all event strings with constants -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,32 +28,19 @@
         rel="preconnect">
 
   <!-- Start the app -->
-  <script type="module">
-    import {
-      bootstrapLoadingPromise,
-      bootstrapStyleSheet
-    } from './src/app/bootstrap.js'
-    import './src/countdown-timer/main.js'
-    import './src/editable-list/main.js'
-
-    document.adoptedStyleSheets = [bootstrapStyleSheet]
-
-    // Hide the content of the web page until the CSS had loaded
-    bootstrapLoadingPromise.then(() => {
-      document.body.removeAttribute('hidden')
-    })
-  </script>
+  <script src="src/app/main.js" type="module"></script>
 </head>
 
 <body hidden>
   <main class="container">
     <section>
-      <countdown-timer></countdown-timer>
+      <countdown-timer id="countdown"></countdown-timer>
     </section>
 
     <section class="mt-4">
       <h2>Distractions</h2>
       <editable-list buttontext="+"
+                     id="distractions"
                      placeholder="Note a distraction"></editable-list>
     </section>
   </main>

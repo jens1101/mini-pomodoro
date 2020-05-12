@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Source Code" pattern="file[mini-pomodoro]:src//*||file:index.html||file:rollup.config.js" />
+</component>

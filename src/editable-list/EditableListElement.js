@@ -7,6 +7,7 @@ export class EditableListElement extends LitElement {
   constructor () {
     super()
 
+    // TODO: this should be an array of {id, text} objects
     this.items = []
     this.buttonText = 'Add'
     this.placeholder = 'Add an item'
@@ -51,15 +52,28 @@ export class EditableListElement extends LitElement {
   addListItem (text) {
     this.items = [...this.items, text]
 
+    /** @type {CustomEvent<{listId: string, text: string}>} */
     const event = new window.CustomEvent('liadded', {
-      bubbles: true
+      detail: {
+        listId: this.id,
+        text
+      }
     })
+    this.dispatchEvent(event)
+  }
+
+  /**
+   *
+   * @param {CustomEvent<{id: number}>} event
+   */
+  removeItemCallback (event) {
     this.dispatchEvent(event)
   }
 
   render () {
     return template(this.items, {
       addItemCallback: event => this.addItemCallback(event),
+      removeItemCallback: event => this.removeItemCallback(event),
       addButtonText: this.buttonText,
       itemTextPlaceholder: this.placeholder
     })

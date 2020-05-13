@@ -53,10 +53,7 @@ export class RemovableListItem extends window.HTMLLIElement {
 
   remove () {
     // Dispatch an event that this list item has been removed
-    const event = new window.CustomEvent('liremoved', {
-      detail: { id: parseInt(this.id) }
-    })
-    this.dispatchEvent(event)
+    this.dispatchEvent(new window.CustomEvent('liremoved'))
 
     // Remove this element. This is done after the event dispatch, otherwise
     // the event won't bubble.

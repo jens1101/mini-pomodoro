@@ -32,15 +32,18 @@ import { db } from './database.js'
 async function initCountdownTimer (countdownElement) {
   // Setup the countdown event listeners
   // When the countdown starts then save the start timestamp to the DB.
-  countdownElement.addEventListener('countdownstart', saveCountdownTimestamp)
+  countdownElement.addEventListener('countdownstart', saveCountdownTimestamp,
+    { passive: true })
 
   // When the countdown was stopped by the user then remove the timestamp
   // from the DB
-  countdownElement.addEventListener('countdownstop', deleteCountdownTimestamp)
+  countdownElement.addEventListener('countdownstop', deleteCountdownTimestamp,
+    { passive: true })
 
   // When the countdown has completed successfully then show the notification
   // and then remove it from the DB.
-  countdownElement.addEventListener('countdowncomplete', deleteCountdownTimestamp)
+  countdownElement.addEventListener('countdowncomplete', deleteCountdownTimestamp,
+    { passive: true })
 
   // Get the countdown timer's value from the DB (if exists).
   const value = await db
@@ -77,46 +80,47 @@ async function deleteCountdownTimestamp (event) {
 /**
  * Initialise the distractions list. This sets up all event handlers and
  * retrieves the list's previously saved items from the DB.
+ * @listens {event:EditableListItemAdded}
+ * @listens {event:EditableListItemRemoved}
  * @param {EditableListElement} distractionsElement The editable list element to
  * initialise as the distractions list.
  * @returns {Promise<void>} Resolves once the list has been initialised.
  */
 async function initDistractionList (distractionsElement) {
-  distractionsElement.addEventListener('liadded', saveDistraction,
+  distractionsElement.addEventListener('liadded', updateDistraction,
     { passive: true })
-  distractionsElement.addEventListener('liremoved', deleteDistraction,
+  distractionsElement.addEventListener('liremoved', updateDistraction,
     { passive: true })
 
   // Get the distractions list's items from the DB and populate the list and
   // add all the distractions that were saved in the DB to the distractions
   // list.
-  distractionsElement.items = await db
+  const entry = await db
     .table(DATABASE.LIST_ITEMS.STORE)
-    .get({ [DATABASE.LIST_ITEMS.LIST_ID]: distractionsElement.id })
+    .get(distractionsElement.id)
+
+  if (entry) distractionsElement.items = entry[DATABASE.LIST_ITEMS.ITEMS]
 }
 
 /**
- * Saves a distraction to the database and resolves into the ID of the row
- * once the transaction is complete.
- * @param {CustomEvent<{listId: string, text: string}>} event
- * @returns {Promise<number>}
+ * Saves a distraction list to the database and resolves into the ID of the row
+ * once the transaction is completed.
+ * @param {event:EditableListItemAdded} event
+ * @returns {Promise<string>}
  */
-async function saveDistraction (event) {
-  // TODO: add the distraction to the DB
-  // TODO: after the item was successfully added then update the `items` property of the distraction list
+async function updateDistraction (event) {
+  try {
+    return db.table(DATABASE.LIST_ITEMS.STORE)
+      .put({
+        [DATABASE.LIST_ITEMS.ID]: event.detail.id,
+        [DATABASE.LIST_ITEMS.ITEMS]: event.detail.currentItems
+      })
+  } catch (e) {
+    /** @type {EditableListElement} */
+    const distractionsElement = document.querySelector('#distractions')
+    distractionsElement.items = event.detail.previousItems
 
-  return db.table(DATABASE.LIST_ITEMS.STORE)
-    .add({
-      [DATABASE.LIST_ITEMS.LIST_ID]: event.detail.listId,
-      [DATABASE.LIST_ITEMS.TEXT]: event.detail.text
-    })
-}
-
-/**
- * Removes the distraction with the given key ID from the DB
- * @param {CustomEvent<{id: number}>} event
- * @returns {Promise<void>} Resolves once the operation is done.
- */
-async function deleteDistraction (event) {
-  return db.table(DATABASE.LIST_ITEMS.STORE).delete(event.detail.id)
+    // TODO: display an error notification to the user
+    console.error(e)
+  }
 }

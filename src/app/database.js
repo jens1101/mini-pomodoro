@@ -1,12 +1,14 @@
-import Dexie from 'dexie'
+import Dexie from '../../web_modules/dexie.js'
 import { DATABASE } from './constants.js'
 
 export const db = new Dexie(DATABASE.NAME)
 
 db.version(0.2)
   .stores({
-    // TODO: add an elementId to countdowns so that we can draw stats. E.g.: how many pomodoros have been run
     countdownTimers: 'id',
-    // TODO: rename `listId` to `elementId`
     listItems: '++id, listId'
   })
+
+db.version(1).stores({ listItems: null })
+
+db.version(2).stores({ listItems: 'id' })

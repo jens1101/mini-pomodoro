@@ -123,14 +123,17 @@ export class EditableListElement extends LitElement {
   }
 
   render () {
-    const listItemElements = this.items.map(item => {
-      return html`
-      <li class="list-group-item d-flex align-items-center"
-          is="removable-li"
-          @liremoved="${event => this.removeItemCallback(event, item)}">
-        <span class="flex-grow-1">${item.text}</span>
-      </li>`
-    })
+    const listItemElements = this.items
+      .concat([])
+      .sort((a, b) => a.text.localeCompare(b.text, undefined, { numeric: true }))
+      .map(item => {
+        return html`
+          <li class="list-group-item d-flex align-items-center"
+              is="removable-li"
+              @liremoved="${event => this.removeItemCallback(event, item)}">
+            <span class="flex-grow-1">${item.text}</span>
+          </li>`
+      })
 
     return html`
       <form @submit="${this.addItemCallback}">

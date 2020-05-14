@@ -52,22 +52,6 @@ export class EditableListElement extends LitElement {
   }
 
   /**
-   * @param {Event} event
-   */
-  addItemCallback (event) {
-    event.preventDefault()
-
-    const form = event.target
-    // noinspection JSUnresolvedVariable
-    const input = form.elements.itemText
-
-    this.addListItem(input.value)
-
-    form.reset()
-    input.focus()
-  }
-
-  /**
    * Adds an item to the list. Each list item will automatically have a delete
    * button to remove the item from the list.
    *
@@ -76,7 +60,7 @@ export class EditableListElement extends LitElement {
    * @fires {EditableListItemAdded}
    * @param {string} text The text to display in the list item.
    */
-  addListItem (text) {
+  addItem (text) {
     const item = { text }
     const previousItems = this.items
     this.items = [...this.items, item]
@@ -91,6 +75,22 @@ export class EditableListElement extends LitElement {
       }
     })
     this.dispatchEvent(event)
+  }
+
+  /**
+   * @param {Event} event
+   */
+  addItemEventHandler (event) {
+    event.preventDefault()
+
+    const form = event.target
+    // noinspection JSUnresolvedVariable
+    const input = form.elements.itemText
+
+    this.addItem(input.value)
+
+    form.reset()
+    input.focus()
   }
 
   /**
@@ -117,7 +117,7 @@ export class EditableListElement extends LitElement {
    * @param {CustomEvent} event
    * @param item
    */
-  removeItemCallback (event, item) {
+  removeItemEventHandler (event, item) {
     event.preventDefault()
     this.removeItem(item)
   }
@@ -130,13 +130,13 @@ export class EditableListElement extends LitElement {
         return html`
           <li class="list-group-item d-flex align-items-center"
               is="removable-li"
-              @liremoved="${event => this.removeItemCallback(event, item)}">
+              @liremoved="${event => this.removeItemEventHandler(event, item)}">
             <span class="flex-grow-1">${item.text}</span>
           </li>`
       })
 
     return html`
-      <form @submit="${this.addItemCallback}">
+      <form @submit="${this.addItemEventHandler}">
         <div class="input-group">
           <label for="itemText" class="sr-only">${this.placeholder}</label>
           <input type="text"

@@ -52,11 +52,12 @@ export class RemovableListItem extends window.HTMLLIElement {
   }
 
   remove () {
-    // Dispatch an event that this list item has been removed
-    this.dispatchEvent(new window.CustomEvent('liremoved'))
+    const event = new window.CustomEvent('liremoved', { cancelable: true })
 
-    // Remove this element. This is done after the event dispatch, otherwise
-    // the event won't bubble.
-    super.remove()
+    // Dispatch an event that this list item has been removed
+    const wasCancelled = !this.dispatchEvent(event)
+
+    // Remove this element if the event was not cancelled.
+    if (!wasCancelled) super.remove()
   }
 }

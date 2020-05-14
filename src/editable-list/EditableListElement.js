@@ -113,16 +113,24 @@ export class EditableListElement extends LitElement {
     this.dispatchEvent(event)
   }
 
+  /**
+   * @param {CustomEvent} event
+   * @param item
+   */
+  removeItemCallback (event, item) {
+    event.preventDefault()
+    this.removeItem(item)
+  }
+
   render () {
-    // FIXME: for some reason this freaks out when I remove an element. I think
-    //  it may have to do with the fact that the removable list item removes
-    //  itself from the DOM.
-    const listItemElements = this.items.map(item => html`
+    const listItemElements = this.items.map(item => {
+      return html`
       <li class="list-group-item d-flex align-items-center"
           is="removable-li"
-          @liremoved="${() => this.removeItem(item)}">
+          @liremoved="${event => this.removeItemCallback(event, item)}">
         <span class="flex-grow-1">${item.text}</span>
-      </li>`)
+      </li>`
+    })
 
     return html`
       <form @submit="${this.addItemCallback}">

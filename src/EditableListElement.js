@@ -138,8 +138,8 @@ export class EditableListElement extends LitElement {
 
     return html`
       <form @submit="${this.addItemEventHandler}">
+        <label for="itemText" class="sr-only">${this.placeholder}</label>
         <div class="input-group">
-          <label for="itemText" class="sr-only">${this.placeholder}</label>
           <input type="text"
                  class="form-control"
                  placeholder="${this.placeholder}"

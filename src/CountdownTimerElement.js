@@ -87,7 +87,7 @@ export class CountdownTimerElement extends LitElement {
       '%'
 
     return html`
-    <div class="card text-center">
+    <div class="card text-center bg-dark text-light">
       <div class="card-body">
         <p class="card-title display-2">${durationString}</p>
         <div class="progress">

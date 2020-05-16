@@ -1,7 +1,7 @@
 import { css } from '../../web_modules/lit-element.js'
 
 const bootstrapUrl = new URL(
-  'https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css')
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
 
 const bootstrapStyleSheet = new window.CSSStyleSheet()
 

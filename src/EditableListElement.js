@@ -1,6 +1,7 @@
-import { LitElement } from '../../web_modules/lit-element.js'
-import { html } from '../../web_modules/lit-html.js'
-import { bootstrapCssResult } from '../app/bootstrap.js'
+import { LitElement } from '../web_modules/lit-element.js'
+import { html } from '../web_modules/lit-html.js'
+import { bootstrapCssResult } from './lib/bootstrap.js'
+import './RemovableListItemElement.js'
 
 /**
  * @typedef EditableListItem
@@ -158,3 +159,5 @@ export class EditableListElement extends LitElement {
       </ul>`
   }
 }
+
+window.customElements.define('editable-list', EditableListElement)

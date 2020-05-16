@@ -9,7 +9,7 @@
  * The text that is displayed in the remove button can be customised via the
  * "data-remove-button-text" attribute.
  */
-export class RemovableListItem extends window.HTMLLIElement {
+export class RemovableListItemElement extends window.HTMLLIElement {
   constructor () {
     super()
 
@@ -61,3 +61,7 @@ export class RemovableListItem extends window.HTMLLIElement {
     if (!wasCancelled) super.remove()
   }
 }
+
+window.customElements.define('removable-li', RemovableListItemElement, {
+  extends: 'li'
+})

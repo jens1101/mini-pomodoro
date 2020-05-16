@@ -88,6 +88,14 @@ export class CountdownTimer {
   }
 
   /**
+   * Indicates whether or not the countdown timer is running.
+   * @return {boolean}
+   */
+  get isRunning () {
+    return !!this._currentTimeoutReference
+  }
+
+  /**
    * Private function which is actually responsible for the countdown. This
    * function gets called to start the countdown and will recursively call
    * itself until the countdown is complete. On each tick this will call the

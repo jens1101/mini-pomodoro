@@ -1,6 +1,10 @@
-import '../countdown-timer/main.js'
-import '../editable-list/main.js'
-import { bootstrapLoadingPromise, bootstrapStyleSheet } from './bootstrap.js'
+import '../CountdownTimerElement.js'
+import '../EditableListElement.js'
+
+import {
+  bootstrapLoadingPromise,
+  bootstrapStyleSheet
+} from '../lib/bootstrap.js'
 import { DATABASE } from './constants.js'
 import { db } from './database.js'
 

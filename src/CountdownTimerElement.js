@@ -1,7 +1,7 @@
-import { LitElement } from '../../web_modules/lit-element.js'
-import { bootstrapCssResult } from '../app/bootstrap.js'
+import { LitElement } from '../web_modules/lit-element.js'
+import { html } from '../web_modules/lit-html.js'
 import { CountdownTimer } from './CountdownTimer.js'
-import { template } from './template.js'
+import { bootstrapCssResult } from './lib/bootstrap.js'
 
 export class CountdownTimerElement extends LitElement {
   constructor () {
@@ -33,6 +33,23 @@ export class CountdownTimerElement extends LitElement {
   }
 
   /**
+   * @nosideeffects
+   * @param {number} durationMs
+   * @return {string}
+   */
+  static durationToDisplayString (durationMs) {
+    const durationSeconds = durationMs / 1000
+    const seconds = `${Math.floor(durationSeconds % 60)}`.padStart(2, '0')
+
+    const durationMinutes = durationSeconds / 60
+    const minutes = `${Math.floor(durationMinutes % 60)}`.padStart(2, '0')
+
+    const hours = `${Math.floor(minutes / 60)}`.padStart(2, '0')
+
+    return `${hours}:${minutes}:${seconds}`
+  }
+
+  /**
    * This is called once this countdown timer has completed. Displays 00:00:00
    * for the countdown time and dispatches the "countdowncomplete" event on this
    * element.
@@ -61,12 +78,38 @@ export class CountdownTimerElement extends LitElement {
   }
 
   render () {
-    return template(this.currentDurationMs, this.totalDurationMs, {
-      startButtonText: this.startButtonText,
-      startCountdownCallback: () => this.startCountdown(),
-      stopButtonText: this.stopButtonText,
-      stopCountdownCallback: () => this.stopCountdown()
-    })
+    const durationString = CountdownTimerElement
+      .durationToDisplayString(this.currentDurationMs)
+
+    const progress = '' +
+      Math.min(Math.max(this.currentDurationMs / this.totalDurationMs * 100, 0),
+        100).toFixed(2) +
+      '%'
+
+    return html`
+    <div class="card text-center">
+      <div class="card-body">
+        <p class="card-title display-2">${durationString}</p>
+        <div class="progress">
+          <div class="progress-bar"
+               style="width: ${progress}"></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button @click="${this.startCountdown}"
+                class="btn btn-primary"
+                type="button"
+                ?disabled="${this._countdownTimer.isRunning}">
+          ${this.startButtonText}
+        </button>
+        <button @click="${this.stopCountdown}"
+                class="btn btn-primary"
+                type="button"
+                ?disabled="${!this._countdownTimer.isRunning}">
+          ${this.stopButtonText}
+        </button>
+      </div>
+    </div>`
   }
 
   /**
@@ -109,3 +152,5 @@ export class CountdownTimerElement extends LitElement {
     }))
   }
 }
+
+window.customElements.define('countdown-timer', CountdownTimerElement)

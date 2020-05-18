@@ -2,6 +2,19 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="ES6PreferShortImport" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="4">
+            <item index="0" class="java.lang.String" itemvalue="@click" />
+            <item index="1" class="java.lang.String" itemvalue="?disabled" />
+            <item index="2" class="java.lang.String" itemvalue="@submit" />
+            <item index="3" class="java.lang.String" itemvalue="@liremoved" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>

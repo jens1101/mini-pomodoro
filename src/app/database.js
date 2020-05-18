@@ -1,4 +1,4 @@
-import Dexie from '../../web_modules/dexie.js'
+import Dexie from 'dexie'
 import { DATABASE } from './constants.js'
 
 export const db = new Dexie(DATABASE.NAME)

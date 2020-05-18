@@ -4,10 +4,8 @@
   "description": "",
   "scripts": {
     "test": "standard",
-    "build": "rimraf dist && rollup -c rollup.config.js",
-    "start": "es-dev-server --open --watch",
-    "start:build": "es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
-    "postinstall": "snowpack"
+    "build": "rimraf dist && parcel build index.html --no-source-maps --experimental-scope-hoisting",
+    "start": "parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -25,12 +23,11 @@
     "lit-html": "^1.2.1"
   },
   "devDependencies": {
-    "@open-wc/building-rollup": "^0.22.12",
-    "deepmerge": "^4.2.2",
-    "es-dev-server": "^1.46.1",
+    "parcel-bundler": "^1.12.4",
     "rimraf": "^3.0.2",
-    "rollup": "^2.6.0",
-    "snowpack": "^1.7.1",
     "standard": "^14.3.3"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
 }

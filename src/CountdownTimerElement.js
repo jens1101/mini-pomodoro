@@ -1,5 +1,5 @@
-import { LitElement } from '../web_modules/lit-element.js'
-import { html } from '../web_modules/lit-html.js'
+import { LitElement } from 'lit-element'
+import { html } from 'lit-html'
 import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from './lib/bootstrap.js'
 

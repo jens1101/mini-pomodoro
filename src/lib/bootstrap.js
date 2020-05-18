@@ -1,4 +1,4 @@
-import { css } from '../../web_modules/lit-element.js'
+import { css } from 'lit-element'
 
 const bootstrapUrl = new URL(
   'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')

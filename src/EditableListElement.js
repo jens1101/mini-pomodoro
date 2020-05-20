@@ -1,5 +1,6 @@
 import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
+import { EVENT_NAMES } from './app/constants.js'
 import { bootstrapCssResult } from './lib/bootstrap.js'
 import './RemovableListItemElement.js'
 
@@ -56,7 +57,7 @@ export class EditableListElement extends LitElement {
    * Adds an item to the list. Each list item will automatically have a delete
    * button to remove the item from the list.
    *
-   * A "liadded" custom event will be dispatched on the li element once the
+   * A "li-added" custom event will be dispatched on the li element once the
    * item has been added to the list.
    * @fires {EditableListItemAdded}
    * @param {string} text The text to display in the list item.
@@ -67,7 +68,7 @@ export class EditableListElement extends LitElement {
     this.items = [...this.items, item]
 
     /** @type {CustomEvent<EditableListItemEvent>} */
-    const event = new window.CustomEvent('liadded', {
+    const event = new window.CustomEvent(EVENT_NAMES.LI_ADDED, {
       detail: {
         id: this.id,
         item,
@@ -103,7 +104,7 @@ export class EditableListElement extends LitElement {
     this.items = this.items.filter(currentItem => currentItem !== item)
 
     /** @type {CustomEvent<EditableListItemEvent>} */
-    const event = new window.CustomEvent('liremoved', {
+    const event = new window.CustomEvent(EVENT_NAMES.LI_REMOVED, {
       detail: {
         id: this.id,
         item,
@@ -131,7 +132,7 @@ export class EditableListElement extends LitElement {
         return html`
           <li class="list-group-item d-flex align-items-center"
               is="removable-li"
-              @liremoved="${event => this.removeItemEventHandler(event, item)}">
+              @li-removed="${event => this.removeItemEventHandler(event, item)}">
             <span class="flex-grow-1">${item.text}</span>
           </li>`
       })

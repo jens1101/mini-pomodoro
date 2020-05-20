@@ -3,12 +3,14 @@
  * contains a button that, once clicked, will remove the list item from the
  * view.
  *
- * When the remove button is clicked then a "liremoved" event will be triggered
+ * When the remove button is clicked then a "li-removed" event will be triggered
  * on this element that bubbles.
  *
  * The text that is displayed in the remove button can be customised via the
  * "data-remove-button-text" attribute.
  */
+import { EVENT_NAMES } from './app/constants.js'
+
 export class RemovableListItemElement extends window.HTMLLIElement {
   constructor () {
     super()
@@ -52,7 +54,9 @@ export class RemovableListItemElement extends window.HTMLLIElement {
   }
 
   remove () {
-    const event = new window.CustomEvent('liremoved', { cancelable: true })
+    const event = new window.CustomEvent(EVENT_NAMES.LI_REMOVED, {
+      cancelable: true
+    })
 
     // Dispatch an event that this list item has been removed
     const wasCancelled = !this.dispatchEvent(event)

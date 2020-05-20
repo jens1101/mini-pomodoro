@@ -9,7 +9,7 @@
             <item index="0" class="java.lang.String" itemvalue="@click" />
             <item index="1" class="java.lang.String" itemvalue="?disabled" />
             <item index="2" class="java.lang.String" itemvalue="@submit" />
-            <item index="3" class="java.lang.String" itemvalue="@liremoved" />
+            <item index="4" class="java.lang.String" itemvalue="@li-removed" />
           </list>
         </value>
       </option>

@@ -5,7 +5,7 @@ import {
   bootstrapLoadingPromise,
   bootstrapStyleSheet
 } from '../lib/bootstrap.js'
-import { DATABASE } from './constants.js'
+import { DATABASE, EVENT_NAMES } from './constants.js'
 import { db } from './database.js'
 
 (async function init () {
@@ -34,20 +34,19 @@ import { db } from './database.js'
  * @returns {Promise<void>} Resolves once the timer has been initialised.
  */
 async function initCountdownTimer (countdownElement) {
-  // Setup the countdown event listeners
   // When the countdown starts then save the start timestamp to the DB.
-  countdownElement.addEventListener('countdownstart', saveCountdownTimestamp,
-    { passive: true })
+  countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_START,
+    saveCountdownTimestamp, { passive: true })
 
   // When the countdown was stopped by the user then remove the timestamp
   // from the DB
-  countdownElement.addEventListener('countdownstop', deleteCountdownTimestamp,
-    { passive: true })
+  countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_STOP,
+    deleteCountdownTimestamp, { passive: true })
 
   // When the countdown has completed successfully then show the notification
   // and then remove it from the DB.
-  countdownElement.addEventListener('countdowncomplete', deleteCountdownTimestamp,
-    { passive: true })
+  countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_COMPLETE,
+    deleteCountdownTimestamp, { passive: true })
 
   // Get the countdown timer's value from the DB (if exists).
   const value = await db
@@ -91,9 +90,9 @@ async function deleteCountdownTimestamp (event) {
  * @returns {Promise<void>} Resolves once the list has been initialised.
  */
 async function initDistractionList (distractionsElement) {
-  distractionsElement.addEventListener('liadded', updateDistraction,
+  distractionsElement.addEventListener(EVENT_NAMES.LI_ADDED, updateDistraction,
     { passive: true })
-  distractionsElement.addEventListener('liremoved', updateDistraction,
+  distractionsElement.addEventListener(EVENT_NAMES.LI_REMOVED, updateDistraction,
     { passive: true })
 
   // Get the distractions list's items from the DB and populate the list and

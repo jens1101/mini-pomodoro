@@ -46,3 +46,15 @@ export const DATABASE = {
     ITEMS: 'items'
   }
 }
+
+/**
+ * All the event names used throughout this app.
+ * @type {Object}
+ */
+export const EVENT_NAMES = {
+  COUNTDOWN_COMPLETE: 'countdown-complete',
+  COUNTDOWN_START: 'countdown-start',
+  COUNTDOWN_STOP: 'countdown-stop',
+  LI_ADDED: 'li-added',
+  LI_REMOVED: 'li-removed'
+}

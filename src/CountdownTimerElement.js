@@ -1,5 +1,6 @@
 import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
+import { EVENT_NAMES } from './app/constants.js'
 import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from './lib/bootstrap.js'
 
@@ -51,19 +52,19 @@ export class CountdownTimerElement extends LitElement {
 
   /**
    * This is called once this countdown timer has completed. Displays 00:00:00
-   * for the countdown time and dispatches the "countdowncomplete" event on this
-   * element.
+   * for the countdown time and dispatches the "countdown-complete" event on
+   * this element.
    * @private
    */
   _countdownComplete () {
     this.currentDurationMs = 0
-    this.dispatchEvent(new window.CustomEvent('countdowncomplete', {
+    this.dispatchEvent(new window.CustomEvent(EVENT_NAMES.COUNTDOWN_COMPLETE, {
       detail: { id: this.id }
     }))
   }
 
   /**
-   * Dispatches the "countdownstart" event on this element. This is called when
+   * Dispatches the "countdown-start" event on this element. This is called when
    * the user starts the countdown timer. The start timestamp and ID are sent as
    * additional details.
    * @private
@@ -71,7 +72,7 @@ export class CountdownTimerElement extends LitElement {
    * started.
    */
   _dispatchStartEvent (startTimestamp) {
-    const event = new window.CustomEvent('countdownstart', {
+    const event = new window.CustomEvent(EVENT_NAMES.COUNTDOWN_START, {
       detail: { id: this.id, startTimestamp }
     })
     this.dispatchEvent(event)
@@ -128,7 +129,7 @@ export class CountdownTimerElement extends LitElement {
   /**
    * Starts the countdown. This first stops any existing countdown and then
    * stats it anew. This dispatches a custom event on this element called
-   * "countdownstart".
+   * "countdown-start".
    */
   startCountdown () {
     this._countdownTimer.stopCountdown()
@@ -141,13 +142,13 @@ export class CountdownTimerElement extends LitElement {
   /**
    * Stops the current countdown. This sets the timer back to zero and cancels
    * any existing timeout. This dispatches a custom event on this element
-   * called "countdownstop".
+   * called "countdown-stop".
    */
   stopCountdown () {
     this._countdownTimer.stopCountdown()
 
     this.currentDurationMs = 0
-    this.dispatchEvent(new window.CustomEvent('countdownstop', {
+    this.dispatchEvent(new window.CustomEvent(EVENT_NAMES.COUNTDOWN_STOP, {
       detail: { id: this.id }
     }))
   }

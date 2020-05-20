@@ -49,13 +49,15 @@ async function initCountdownTimer (countdownElement) {
     deleteCountdownTimestamp, { passive: true })
 
   // Get the countdown timer's value from the DB (if exists).
-  const value = await db
+  const entry = await db
     .table(DATABASE.COUNTDOWNS.STORE)
     .get(countdownElement.id)
 
   // If an object was associated with the current view's countdown timer then
   // resume the countdown from the timestamp stored in the object.
-  if (value) countdownElement.resumeCountdown(value.startTimestamp)
+  if (entry) {
+    countdownElement.resumeCountdown(entry[DATABASE.COUNTDOWNS.START_TIMESTAMP])
+  }
 }
 
 /**
@@ -67,7 +69,7 @@ async function initCountdownTimer (countdownElement) {
 async function saveCountdownTimestamp (event) {
   return db.table(DATABASE.COUNTDOWNS.STORE).put({
     [DATABASE.COUNTDOWNS.ID]: event.detail.id,
-    startTimestamp: event.detail.startTimestamp
+    [DATABASE.COUNTDOWNS.START_TIMESTAMP]: event.detail.startTimestamp
   })
 }
 

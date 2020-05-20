@@ -27,7 +27,11 @@ export const DATABASE = {
      * The key path for individual countdown timers. This is used to uniquely
      * identify each countdown timer.
      */
-    ID: 'id'
+    ID: 'id',
+    /**
+     * The timestamp when each countdown timer started.
+     */
+    START_TIMESTAMP: 'startTimestamp'
   },
   LIST_ITEMS: {
     /**

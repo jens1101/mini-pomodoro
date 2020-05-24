@@ -23,13 +23,13 @@
         type="image/png" />
   <base href="/" />
 
-  <!-- Pre-connecting to remote sites that this app uses -->
-  <link href="https://stackpath.bootstrapcdn.com/"
-        rel="preconnect">
-  <link href="https://fonts.googleapis.com/"
-        rel="preconnect">
-  <link href="https://fonts.gstatic.com/"
-        rel="preconnect">
+  <!--
+  Pre-fetch the bootstrap CSS file, but don't import it as a style sheet. We
+  add bootstrap as a style sheet later via JS.
+  -->
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+        id="bootstrap"
+        rel="preload" />
 
   <!-- Start the app -->
   <script defer src="src/app/main.js"></script>

@@ -1,11 +1,10 @@
 import { css } from 'lit-element'
 
-const bootstrapUrl = new URL(
-  'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css')
+const bootstrapUrl = document.querySelector('#bootstrap').href
 
 const bootstrapStyleSheet = new window.CSSStyleSheet()
 
-const cssText = `@import url(${bootstrapUrl.href})`
+const cssText = `@import url(${bootstrapUrl})`
 const bootstrapLoadingPromise = bootstrapStyleSheet.replace(cssText)
 
 const bootstrapCssResult = css``

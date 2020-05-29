@@ -9,13 +9,22 @@ import { DATABASE, EVENT_NAMES } from './constants.js'
 import { db } from './database.js'
 
 (async function init () {
+  // Add Bootstrap to the main document as a style sheet.
   document.adoptedStyleSheets = [bootstrapStyleSheet]
 
-  /** @type {CountdownTimerElement} */
+  /**
+   * The countdown element used as the pomodoro timer.
+   * @type {CountdownTimerElement}
+   */
   const countdownElement = document.querySelector('#countdown')
-  /** @type {EditableListElement} */
+
+  /**
+   * The editable list used as the list of distractions by the app.
+   * @type {EditableListElement}
+   */
   const distractionsElement = document.querySelector('#distractions')
 
+  // Wait for all the setup to complete
   await Promise.all([
     bootstrapLoadingPromise,
     initCountdownTimer(countdownElement),
@@ -28,23 +37,24 @@ import { db } from './database.js'
 
 /**
  * Initialise the countdown timer. This sets up all event handlers and
- * resumes the countdown timer (if applicable)
+ * resumes the countdown timer (if applicable).
  * @param {CountdownTimerElement} countdownElement The countdown timer element
  * to initialise
  * @returns {Promise<void>} Resolves once the timer has been initialised.
  */
 async function initCountdownTimer (countdownElement) {
-  // When the countdown starts then save the start timestamp to the DB.
+  // Setup the start countdown event. When the countdown starts then save the
+  // start timestamp to the DB.
   countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_START,
     saveCountdownTimestamp, { passive: true })
 
-  // When the countdown was stopped by the user then remove the timestamp
-  // from the DB
+  // Setup the end countdown event. When the countdown was stopped by the user
+  // then remove the timestamp from the DB
   countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_STOP,
     deleteCountdownTimestamp, { passive: true })
 
-  // When the countdown has completed successfully then show the notification
-  // and then remove it from the DB.
+  // Setup the countdown complete event. When the countdown has completed
+  // successfully then show the notification and then remove it from the DB.
   countdownElement.addEventListener(EVENT_NAMES.COUNTDOWN_COMPLETE,
     deleteCountdownTimestamp, { passive: true })
 
@@ -92,14 +102,15 @@ async function deleteCountdownTimestamp (event) {
  * @returns {Promise<void>} Resolves once the list has been initialised.
  */
 async function initDistractionList (distractionsElement) {
+  // Setup the list item added event. Add the new list item to the DB.
   distractionsElement.addEventListener(EVENT_NAMES.LI_ADDED, updateDistraction,
     { passive: true })
+  // Setup the list item removed event. Remove the list item from the DB.
   distractionsElement.addEventListener(EVENT_NAMES.LI_REMOVED, updateDistraction,
     { passive: true })
 
-  // Get the distractions list's items from the DB and populate the list and
-  // add all the distractions that were saved in the DB to the distractions
-  // list.
+  // Get the distractions list items from the DB, populate the list, and add
+  // all the distractions that were saved in the DB to the distractions list.
   const entry = await db
     .table(DATABASE.LIST_ITEMS.STORE)
     .get(distractionsElement.id)

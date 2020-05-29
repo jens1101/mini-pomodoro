@@ -18,25 +18,37 @@ export const DATABASE = {
    * @type {string}
    */
   NAME: 'miniPomodoro',
+  /**
+   * All constants related to the countdown timers.
+   * @type {Object}
+   */
   COUNTDOWNS: {
     /**
      * The table in which all countdown timers are stored.
+     * @type {string}
      */
     STORE: 'countdownTimers',
     /**
      * The key path for individual countdown timers. This is used to uniquely
      * identify each countdown timer.
+     * @type {string}
      */
     ID: 'id',
     /**
      * The timestamp when each countdown timer started.
+     * @type {string}
      */
     START_TIMESTAMP: 'startTimestamp'
   },
+  /**
+   * All constants related to list items.
+   * @type {Object}
+   */
   LIST_ITEMS: {
     /**
      * The table in which all list items get stored. This is currently used by
      * the "distractions" list.
+     * @type {string}
      */
     STORE: 'listItems',
     /**
@@ -46,6 +58,7 @@ export const DATABASE = {
     ID: 'id',
     /**
      * The key path for all items per list
+     * @type {string}
      */
     ITEMS: 'items'
   }

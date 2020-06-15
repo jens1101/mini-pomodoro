@@ -4,6 +4,11 @@ import { EVENT_NAMES } from './app/constants.js'
 import { CountdownTimer } from './CountdownTimer.js'
 import { bootstrapCssResult } from './lib/bootstrap.js'
 
+/**
+ * An element that will countdown for the specified duration. Allows the user to
+ * start and stop the countdown. Events are emitted for countdown start, stop,
+ * and completion.
+ */
 export class CountdownTimerElement extends LitElement {
   constructor () {
     super()
@@ -11,12 +16,34 @@ export class CountdownTimerElement extends LitElement {
     /**
      * The countdown timer that is responsible for the actual timer logic.
      * @type {CountdownTimer}
+     * @private
      */
     this._countdownTimer = new CountdownTimer()
 
-    this.totalDurationMs = CountdownTimer.DEFAULT_DURATION_MS
+    /**
+     * The duration in milliseconds of this countdown timer.
+     * @type {number}
+     * @private
+     */
+    this._totalDurationMs = this._countdownTimer.durationMs
+
+    /**
+     * The number of milliseconds that have passed since the countdown has been
+     * started.
+     * @type {number}
+     */
     this.currentDurationMs = 0
+
+    /**
+     * The text to display in the countdown start button.
+     * @type {string}
+     */
     this.startButtonText = 'Start'
+
+    /**
+     * The text to display in the countdown stop button.
+     * @type {string}
+     */
     this.stopButtonText = 'Stop'
   }
 
@@ -34,9 +61,33 @@ export class CountdownTimerElement extends LitElement {
   }
 
   /**
+   * Gets the total number of milliseconds for which this timer will run.
+   * @returns {number}
+   */
+  get totalDurationMs () {
+    return this._totalDurationMs
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  /**
+   * Sets the total number of milliseconds for which this timer will run.
+   * @param {number} newDuration The new duration for the timer. Must be a
+   * positive integer.
+   * @throws {TypeError} If the duration is not an integer
+   * @throws {RangeError} If the duration is not a positive integer
+   */
+  set totalDurationMs (newDuration) {
+    this._countdownTimer.durationMs = newDuration
+    this._totalDurationMs = newDuration
+  }
+
+  /**
+   * Converts the given number of milliseconds into a timer display string.
+   * Hours, minutes, and seconds are separated by colons.
    * @nosideeffects
-   * @param {number} durationMs
-   * @return {string}
+   * @param {number} durationMs The duration in milliseconds.
+   * @return {string} A human readable string representing the specified
+   * duration.
    */
   static durationToDisplayString (durationMs) {
     const durationSeconds = durationMs / 1000
@@ -154,4 +205,5 @@ export class CountdownTimerElement extends LitElement {
   }
 }
 
+// Register the custom element.
 window.customElements.define('countdown-timer', CountdownTimerElement)

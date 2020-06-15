@@ -1,3 +1,5 @@
+import { EVENT_NAMES } from './app/constants.js'
+
 /**
  * Custom component which extends the HTML `<li>` element so that the list item
  * contains a button that, once clicked, will remove the list item from the
@@ -9,8 +11,6 @@
  * The text that is displayed in the remove button can be customised via the
  * "data-remove-button-text" attribute.
  */
-import { EVENT_NAMES } from './app/constants.js'
-
 export class RemovableListItemElement extends window.HTMLLIElement {
   constructor () {
     super()

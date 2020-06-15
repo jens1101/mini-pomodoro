@@ -40,6 +40,7 @@ export class RemovableListItemElement extends window.HTMLLIElement {
     return ['data-remove-button-text']
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Lifecycle callback. Gets called whenever the component's HTML attributes
    * are changed.

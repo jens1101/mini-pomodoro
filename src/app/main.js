@@ -1,6 +1,5 @@
 import '../CountdownTimerElement.js'
 import '../EditableListElement.js'
-
 import {
   bootstrapLoadingPromise,
   bootstrapStyleSheet
@@ -132,6 +131,8 @@ async function updateDistraction (event) {
         [DATABASE.LIST_ITEMS.ITEMS]: event.detail.currentItems
       })
   } catch (e) {
+    // If the update failed then revert the UI to the previous state.
+
     /** @type {EditableListElement} */
     const distractionsElement = document.querySelector('#distractions')
     distractionsElement.items = event.detail.previousItems

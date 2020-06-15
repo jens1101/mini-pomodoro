@@ -1,14 +1,4 @@
 /**
- * @callback EventCallback
- * @param {Event} event
- */
-
-/**
- * @callback CustomEventCallback
- * @param {CustomEvent} event
- */
-
-/**
  * Contains constants related to the app's database.
  * @type {Object}
  */

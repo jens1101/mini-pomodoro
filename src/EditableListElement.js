@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
 import { EVENT_NAMES } from './app/constants.js'
-import { bootstrapCssResult } from './lib/bootstrap.js'
+import { bootstrapLitCss } from './styles/bootstrap.js'
 import './RemovableListItemElement.js'
 
 /**
@@ -74,7 +74,7 @@ export class EditableListElement extends LitElement {
   }
 
   static get styles () {
-    return [bootstrapCssResult]
+    return [bootstrapLitCss]
   }
 
   /**

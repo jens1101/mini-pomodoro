@@ -2,7 +2,7 @@ import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
 import { EVENT_NAMES } from './app/constants.js'
 import { CountdownTimer } from './CountdownTimer.js'
-import { bootstrapCssResult } from './lib/bootstrap.js'
+import { bootstrapLitCss } from './styles/bootstrap.js'
 
 /**
  * An element that will countdown for the specified duration. Allows the user to
@@ -57,7 +57,7 @@ export class CountdownTimerElement extends LitElement {
   }
 
   static get styles () {
-    return bootstrapCssResult
+    return bootstrapLitCss
   }
 
   /**
@@ -139,29 +139,29 @@ export class CountdownTimerElement extends LitElement {
       '%'
 
     return html`
-    <div class="card text-center bg-dark text-light">
-      <div class="card-body">
-        <p class="card-title display-2">${durationString}</p>
-        <div class="progress">
-          <div class="progress-bar"
-               style="width: ${progress}"></div>
+      <div class="card text-center bg-dark text-light">
+        <div class="card-body">
+          <p class="card-title display-2">${durationString}</p>
+          <div class="progress">
+            <div class="progress-bar"
+                 style="width: ${progress}"></div>
+          </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <button @click="${this.startCountdown}"
-                class="btn btn-primary"
-                type="button"
-                ?disabled="${this._countdownTimer.isRunning}">
-          ${this.startButtonText}
-        </button>
-        <button @click="${this.stopCountdown}"
-                class="btn btn-primary"
-                type="button"
-                ?disabled="${!this._countdownTimer.isRunning}">
-          ${this.stopButtonText}
-        </button>
-      </div>
-    </div>`
+        <div class="card-footer">
+          <button @click="${this.startCountdown}"
+                  class="btn btn-primary"
+                  type="button"
+                  ?disabled="${this._countdownTimer.isRunning}">
+            ${this.startButtonText}
+          </button>
+          <button @click="${this.stopCountdown}"
+                  class="btn btn-primary"
+                  type="button"
+                  ?disabled="${!this._countdownTimer.isRunning}">
+            ${this.stopButtonText}
+          </button>
+        </div>
+      </div>`
   }
 
   /**

@@ -3,7 +3,7 @@ import '../EditableListElement.js'
 import {
   bootstrapLoadingPromise,
   bootstrapStyleSheet
-} from '../lib/bootstrap.js'
+} from '../styles/bootstrap.js'
 import { DATABASE, EVENT_NAMES } from './constants.js'
 import { db } from './database.js'
 
@@ -130,14 +130,13 @@ async function updateDistraction (event) {
         [DATABASE.LIST_ITEMS.ID]: event.detail.id,
         [DATABASE.LIST_ITEMS.ITEMS]: event.detail.currentItems
       })
-  } catch (e) {
+  } catch (error) {
     // If the update failed then revert the UI to the previous state.
 
     /** @type {EditableListElement} */
     const distractionsElement = document.querySelector('#distractions')
     distractionsElement.items = event.detail.previousItems
 
-    // TODO: display an error notification to the user
-    console.error(e)
+    throw error
   }
 }

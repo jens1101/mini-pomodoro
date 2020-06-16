@@ -27,6 +27,27 @@
 
   <!-- Start the app -->
   <script defer src="src/app/main.js"></script>
+
+  <style>
+    #alert-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .icon-button {
+      background-color: transparent;
+      padding: 0;
+      border: none;
+      text-shadow: rgb(255, 255, 255) 0 1px 0;
+      opacity: 0.5;
+    }
+
+    .icon-button:not(:disabled):not(.disabled):hover {
+      opacity: 0.75;
+    }
+  </style>
 </head>
 
 <body hidden>
@@ -42,5 +63,32 @@
                      placeholder="Note a distraction"></editable-list>
     </section>
   </main>
+
+  <aside class="container" id="alert-container">
+    <!--
+    TODO: This should stack alerts behind each other in a reverse exponential
+     distance. So the 1st and 2nd alert are x apart, the 2nd and 3rd alert are
+     x/2 apart, etc.
+    -->
+
+    <div class="card text-light bg-danger">
+      <div class="card-header d-flex align-items-center">
+        <strong class="flex-fill">Some problem</strong>
+
+        <button class="icon-button" type="button">
+          <span>&#x25bc;</span>
+        </button>
+
+        <button class="close" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Danger card title</h5>
+        <p class="card-text">Some quick example text to build on the card title
+          and make up the bulk of the card's content.</p>
+      </div>
+    </div>
+  </aside>
 </body>
 </html>

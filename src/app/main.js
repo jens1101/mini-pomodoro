@@ -1,5 +1,6 @@
 import '../CountdownTimerElement.js'
 import '../EditableListElement.js'
+import { TOAST_TYPES } from '../ToastContainerElement.js'
 import {
   bootstrapLoadingPromise,
   bootstrapStyleSheet
@@ -22,6 +23,16 @@ import { db } from './database.js'
    * @type {EditableListElement}
    */
   const distractionsElement = document.querySelector('#distractions')
+
+  /**
+   * @type {ToastContainerElement}
+   */
+  const toastContainer = document.querySelector('#toasts')
+  toastContainer.addToast({
+    type: TOAST_TYPES.DEFAULT,
+    headerText: 'Hello',
+    bodyText: 'World'
+  })
 
   // Wait for all the setup to complete
   await Promise.all([

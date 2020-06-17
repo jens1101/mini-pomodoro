@@ -1,50 +1,95 @@
 import { css, LitElement } from 'lit-element'
 import { html } from 'lit-html'
+import { bootstrapLitCss } from './styles/bootstrap.js'
+
+/**
+ * @typedef ToastConfig
+ * @property {TOAST_TYPES} type
+ * @property {string} headerText
+ * @property {string} bodyText
+ */
+
+/**
+ * @readonly
+ * @enum {string}
+ */
+export const TOAST_TYPES = {
+  DEFAULT: 'default',
+  SUCCESS: 'success',
+  DANGER: 'danger',
+  WARNING: 'warning',
+  INFO: 'info'
+}
 
 export class ToastContainerElement extends LitElement {
+  constructor () {
+    super()
+
+    /**
+     * @type {ToastConfig[]}
+     * @private
+     */
+    this.toasts = []
+  }
+
+  static get properties () {
+    return {
+      toasts: { attribute: false }
+    }
+  }
+
   static get styles () {
-    return css`
-      #toast-container {
+    return [
+      bootstrapLitCss,
+      css`
+      :host {
         position: absolute;
         top: 0.75rem;
         right: 0.75rem;
       }`
+    ]
+  }
+
+  /**
+   *
+   * @param {ToastConfig} toast
+   */
+  addToast (toast) {
+    this.toasts = [...this.toasts, toast]
+  }
+
+  removeToast (toast) {
+    this.toasts = this.toasts.filter(currentToast => currentToast !== toast)
   }
 
   render () {
-    return html`
-      <aside id="toast-container">
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <strong class="mr-auto">
-              Notification
-            </strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-              <span class="gg-close"></span>
-            </button>
-          </div>
-          <div class="toast-body">
-            See? Just like this.
-          </div>
-        </div>
+    const toasts = this.toasts.map(toast => this.toastToLitHtml(toast))
 
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-            <strong class="mr-auto">
-              Notification
-            </strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-              <span class="gg-close"></span>
-            </button>
-          </div>
-          <div class="toast-body">
-            Heads up, toasts will stack automatically
-            Heads up, toasts will stack automatically
-            Heads up, toasts will stack automatically
-            Heads up, toasts will stack automatically
-            Heads up, toasts will stack automatically
-          </div>
+    return html`${toasts}`
+  }
+
+  /**
+   *
+   * @param {ToastConfig} toast
+   * @returns {TemplateResult}
+   */
+  toastToLitHtml (toast) {
+    return html`
+      <div class="toast show">
+        <div class="toast-header">
+          <strong class="mr-auto">${toast.headerText}</strong>
+          <button type="button"
+                  class="ml-2 mb-1 close"
+                  @click="${() => this.removeToast(toast)}">
+            <span>&times;</span>
+          </button>
         </div>
-      </aside>`
+        <div class="toast-body">
+          ${toast.bodyText}
+        </div>
+      </div>`
   }
 }
+
+// Register the custom element.
+window.customElements.define('toast-container', ToastContainerElement)

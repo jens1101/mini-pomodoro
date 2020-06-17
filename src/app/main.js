@@ -1,10 +1,10 @@
 import '../CountdownTimerElement.js'
 import '../EditableListElement.js'
-import { TOAST_TYPES } from '../ToastContainerElement.js'
 import {
   bootstrapLoadingPromise,
   bootstrapStyleSheet
 } from '../styles/bootstrap.js'
+import { TOAST_TYPES } from '../ToastContainerElement.js'
 import { DATABASE, EVENT_NAMES } from './constants.js'
 import { db } from './database.js'
 

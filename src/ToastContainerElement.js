@@ -74,10 +74,27 @@ export class ToastContainerElement extends LitElement {
    * @returns {TemplateResult}
    */
   toastToLitHtml (toast) {
+    let textClass = ''
+
+    switch (toast.type) {
+      case TOAST_TYPES.DANGER:
+        textClass = 'text-danger'
+        break
+      case TOAST_TYPES.INFO:
+        textClass = 'text-info'
+        break
+      case TOAST_TYPES.SUCCESS:
+        textClass = 'text-success'
+        break
+      case TOAST_TYPES.WARNING:
+        textClass = 'text-warning'
+        break
+    }
+
     return html`
       <div class="toast show">
         <div class="toast-header">
-          <strong class="mr-auto">${toast.headerText}</strong>
+          <strong class="mr-auto ${textClass}">${toast.headerText}</strong>
           <button type="button"
                   class="ml-2 mb-1 close"
                   @click="${() => this.removeToast(toast)}">

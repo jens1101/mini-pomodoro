@@ -1,8 +1,8 @@
 import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
-import { EVENT_NAMES } from './app/constants.js'
+import { EVENT_NAMES } from './constants.js'
 import { CountdownTimer } from './CountdownTimer.js'
-import { bootstrapLitCss } from './styles/bootstrap.js'
+import { litCss } from './styles.js'
 
 /**
  * An element that will countdown for the specified duration. Allows the user to
@@ -57,7 +57,7 @@ export class CountdownTimerElement extends LitElement {
   }
 
   static get styles () {
-    return bootstrapLitCss
+    return litCss
   }
 
   /**

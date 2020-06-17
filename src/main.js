@@ -1,16 +1,13 @@
-import '../CountdownTimerElement.js'
-import '../EditableListElement.js'
-import {
-  bootstrapLoadingPromise,
-  bootstrapStyleSheet
-} from '../styles/bootstrap.js'
-import { TOAST_TYPES } from '../ToastContainerElement.js'
 import { DATABASE, EVENT_NAMES } from './constants.js'
+import './CountdownTimerElement.js'
 import { db } from './database.js'
+import './EditableListElement.js'
+import { loadingPromise, styleSheet } from './styles.js'
+import { TOAST_TYPES } from './ToastContainerElement.js'
 
 (async function init () {
   // Add Bootstrap to the main document as a style sheet.
-  document.adoptedStyleSheets = [bootstrapStyleSheet]
+  document.adoptedStyleSheets = [styleSheet]
 
   /**
    * The countdown element used as the pomodoro timer.
@@ -28,15 +25,21 @@ import { db } from './database.js'
    * @type {ToastContainerElement}
    */
   const toastContainer = document.querySelector('#toasts')
-  toastContainer.addToast({
-    type: TOAST_TYPES.DEFAULT,
-    headerText: 'Hello',
-    bodyText: 'World'
+
+  // Handle any unhandled DB errors
+  window.addEventListener('unhandledrejection', event => {
+    const error = event.reason
+
+    toastContainer.addToast({
+      type: TOAST_TYPES.DANGER,
+      headerText: 'A database error occurred',
+      bodyText: error.message
+    })
   })
 
   // Wait for all the setup to complete
   await Promise.all([
-    bootstrapLoadingPromise,
+    loadingPromise,
     initCountdownTimer(countdownElement),
     initDistractionList(distractionsElement)
   ])
@@ -130,9 +133,12 @@ async function initDistractionList (distractionsElement) {
 
 /**
  * Saves a distraction list to the database and resolves into the ID of the row
- * once the transaction is completed.
+ * once the transaction is completed. If an error occurred then the UI will be
+ * reverted and the
  * @param {event:EditableListItemAdded} event
- * @returns {Promise<string>}
+ * @returns {Promise<string|undefined>} If the operation succeeds then resolves
+ * to the key under which the object was stored in the table. Otherwise returns
+ * undefined.
  */
 async function updateDistraction (event) {
   try {
@@ -144,10 +150,19 @@ async function updateDistraction (event) {
   } catch (error) {
     // If the update failed then revert the UI to the previous state.
 
+    // TODO: these document queries are impure. There has to be a better
+    //  solution.
+
     /** @type {EditableListElement} */
     const distractionsElement = document.querySelector('#distractions')
     distractionsElement.items = event.detail.previousItems
 
-    throw error
+    /** @type {ToastContainerElement} */
+    const toastContainer = document.querySelector('#toasts')
+    toastContainer.addToast({
+      type: TOAST_TYPES.DANGER,
+      headerText: 'Error updating distractions',
+      bodyText: error.message
+    })
   }
 }

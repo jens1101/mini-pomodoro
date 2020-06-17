@@ -1,4 +1,4 @@
-import { EVENT_NAMES } from './app/constants.js'
+import { EVENT_NAMES } from './constants.js'
 
 /**
  * Custom component which extends the HTML `<li>` element so that the list item

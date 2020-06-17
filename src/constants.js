@@ -1,4 +1,24 @@
 /**
+ * The return type of `html`, which holds a Template and the values from
+ * interpolated expressions.
+ * @typedef TemplateResult
+ * @property {TemplateStringsArray} strings
+ * @property {*[]} values
+ * @property {string} type
+ * @property {Function<string>} getHTML Returns a string of HTML used to create
+ * a `<template>` element.
+ * @property {Function<HTMLTemplateElement>} getTemplateElement
+ */
+
+/**
+ * @typedef CSSResult
+ * @property {string} cssText
+ * @property {CSSStyleSheet|null} [_styleSheet]
+ * @property {CSSStyleSheet|null} styleSheet
+ * @property {Function<string>} toString
+ */
+
+/**
  * Contains constants related to the app's database.
  * @type {Object}
  */

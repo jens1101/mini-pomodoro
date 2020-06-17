@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jens1101/mini-pomodoro#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "bootstrap": "^4.5.0",
     "dexie": "^3.0.1",
     "lit-element": "^2.3.1",

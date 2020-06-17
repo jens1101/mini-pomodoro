@@ -1,8 +1,8 @@
 import { LitElement } from 'lit-element'
 import { html } from 'lit-html'
-import { EVENT_NAMES } from './app/constants.js'
-import { bootstrapLitCss } from './styles/bootstrap.js'
+import { EVENT_NAMES } from './constants.js'
 import './RemovableListItemElement.js'
+import { litCss } from './styles.js'
 
 /**
  * An object that represents an item in the editable list element.
@@ -74,7 +74,7 @@ export class EditableListElement extends LitElement {
   }
 
   static get styles () {
-    return [bootstrapLitCss]
+    return [litCss]
   }
 
   /**

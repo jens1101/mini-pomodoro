@@ -2,8 +2,10 @@
   <dictionary name="jens">
     <words>
       <w>dexie</w>
+      <w>fortawesome</w>
       <w>nosideeffects</w>
       <w>pomodoro</w>
+      <w>unhandledrejection</w>
     </words>
   </dictionary>
 </component>

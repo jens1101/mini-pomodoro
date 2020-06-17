@@ -41,7 +41,7 @@ import { TOAST_TYPES } from './ToastContainerElement.js'
   await Promise.all([
     loadingPromise,
     initCountdownTimer(countdownElement),
-    initDistractionList(distractionsElement)
+    initDistractionList(distractionsElement, toastContainer)
   ])
 
   // Only show the body contents once all setup has been completed
@@ -112,14 +112,36 @@ async function deleteCountdownTimestamp (event) {
  * @listens {event:EditableListItemRemoved}
  * @param {EditableListElement} distractionsElement The editable list element to
  * initialise as the distractions list.
+ * @param {ToastContainerElement} toastContainer The toast container to which
+ * to add toasts when an error occurs.
  * @returns {Promise<void>} Resolves once the list has been initialised.
  */
-async function initDistractionList (distractionsElement) {
+async function initDistractionList (distractionsElement, toastContainer) {
+  /**
+   * Event handler for when distractions get added and deleted.
+   * @param {event:EditableListItemAdded} event
+   */
+  const onListUpdate = async (event) => {
+    try {
+      await setListItems(event.detail.id, event.detail.currentItems)
+    } catch (error) {
+      // If the update failed then revert the UI to the previous state and show
+      // an error toast.
+
+      distractionsElement.items = event.detail.previousItems
+      toastContainer.addToast({
+        type: TOAST_TYPES.DANGER,
+        headerText: 'Error updating distractions',
+        bodyText: error.message
+      })
+    }
+  }
+
   // Setup the list item added event. Add the new list item to the DB.
-  distractionsElement.addEventListener(EVENT_NAMES.LI_ADDED, updateDistraction,
+  distractionsElement.addEventListener(EVENT_NAMES.LI_ADDED, onListUpdate,
     { passive: true })
   // Setup the list item removed event. Remove the list item from the DB.
-  distractionsElement.addEventListener(EVENT_NAMES.LI_REMOVED, updateDistraction,
+  distractionsElement.addEventListener(EVENT_NAMES.LI_REMOVED, onListUpdate,
     { passive: true })
 
   // Get the distractions list items from the DB, populate the list, and add
@@ -132,37 +154,19 @@ async function initDistractionList (distractionsElement) {
 }
 
 /**
- * Saves a distraction list to the database and resolves into the ID of the row
- * once the transaction is completed. If an error occurred then the UI will be
- * reverted and the
- * @param {event:EditableListItemAdded} event
- * @returns {Promise<string|undefined>} If the operation succeeds then resolves
- * to the key under which the object was stored in the table. Otherwise returns
- * undefined.
+ * Updates the list with the specified ID. If the list doesn't exist in the
+ * table then a new row is created instead.
+ * @param {string} id The ID of the list
+ * @param {EditableListItem[]} items The new array of items to update the
+ * list to
+ * @returns {Promise<string>} If the operation succeeds then resolves to the
+ * key under which the list was stored in the table
+ * @throws {DexieError} If the DB operation failed
  */
-async function updateDistraction (event) {
-  try {
-    return db.table(DATABASE.LIST_ITEMS.STORE)
-      .put({
-        [DATABASE.LIST_ITEMS.ID]: event.detail.id,
-        [DATABASE.LIST_ITEMS.ITEMS]: event.detail.currentItems
-      })
-  } catch (error) {
-    // If the update failed then revert the UI to the previous state.
-
-    // TODO: these document queries are impure. There has to be a better
-    //  solution.
-
-    /** @type {EditableListElement} */
-    const distractionsElement = document.querySelector('#distractions')
-    distractionsElement.items = event.detail.previousItems
-
-    /** @type {ToastContainerElement} */
-    const toastContainer = document.querySelector('#toasts')
-    toastContainer.addToast({
-      type: TOAST_TYPES.DANGER,
-      headerText: 'Error updating distractions',
-      bodyText: error.message
+async function setListItems (id, items) {
+  return db.table(DATABASE.LIST_ITEMS.STORE)
+    .put({
+      [DATABASE.LIST_ITEMS.ID]: id,
+      [DATABASE.LIST_ITEMS.ITEMS]: items
     })
-  }
 }

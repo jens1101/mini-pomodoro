@@ -47,7 +47,7 @@ export class ToastContainerElement extends LitElement {
 
   static get properties () {
     return {
-      toasts: { attribute: false }
+      toasts: { type: Array }
     }
   }
 

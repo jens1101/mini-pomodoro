@@ -53,12 +53,6 @@ export class EditableListElement extends LitElement {
     this.items = []
 
     /**
-     * The text to display in the add button.
-     * @type {string}
-     */
-    this.buttonText = 'Add'
-
-    /**
      * The placeholder to display in the text input element.
      * @type {string}
      */
@@ -68,7 +62,6 @@ export class EditableListElement extends LitElement {
   static get properties () {
     return {
       items: { type: Array },
-      buttonText: { type: String },
       placeholder: { type: String }
     }
   }
@@ -170,6 +163,7 @@ export class EditableListElement extends LitElement {
         return html`
           <li class="list-group-item d-flex align-items-center"
               is="removable-li"
+              data-remove-button-html="<span class='fas fa-times'></span>"
               @li-removed="${event => this.removeItemEventHandler(event, item)}">
             <span class="flex-grow-1">${item.text}</span>
           </li>`
@@ -187,7 +181,7 @@ export class EditableListElement extends LitElement {
                  required>
           <div class="input-group-append">
             <button class="btn btn-primary" type="submit">
-              ${this.buttonText}
+              <slot name="add-button">Add</slot>
             </button>
           </div>
         </div>

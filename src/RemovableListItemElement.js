@@ -37,7 +37,7 @@ export class RemovableListItemElement extends window.HTMLLIElement {
    */
   static get observedAttributes () {
     // Note that the "data-" prefix was chosen to maintain valid HTML
-    return ['data-remove-button-text']
+    return ['data-remove-button-text', 'data-remove-button-html']
   }
 
   // noinspection JSUnusedGlobalSymbols
@@ -48,9 +48,14 @@ export class RemovableListItemElement extends window.HTMLLIElement {
    * @param {string} oldValue The previous value of the attribute
    * @param {string} newValue The new value of the attribute after the change
    */
-  async attributeChangedCallback (name, oldValue, newValue) {
-    if (name === 'data-remove-button-text') {
-      this._removeButton.textContent = newValue
+  attributeChangedCallback (name, oldValue, newValue) {
+    switch (name) {
+      case 'data-remove-button-text':
+        this._removeButton.textContent = newValue
+        break
+      case 'data-remove-button-html':
+        this._removeButton.innerHTML = newValue
+        break
     }
   }
 

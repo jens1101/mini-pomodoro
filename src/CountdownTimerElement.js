@@ -33,26 +33,12 @@ export class CountdownTimerElement extends LitElement {
      * @type {number}
      */
     this.currentDurationMs = 0
-
-    /**
-     * The text to display in the countdown start button.
-     * @type {string}
-     */
-    this.startButtonText = 'Start'
-
-    /**
-     * The text to display in the countdown stop button.
-     * @type {string}
-     */
-    this.stopButtonText = 'Stop'
   }
 
   static get properties () {
     return {
       totalDurationMs: { type: Number },
-      currentDurationMs: { attribute: false },
-      startButtonText: { type: String },
-      stopButtonText: { type: String }
+      currentDurationMs: { attribute: false }
     }
   }
 
@@ -152,13 +138,17 @@ export class CountdownTimerElement extends LitElement {
                   class="btn btn-primary"
                   type="button"
                   ?disabled="${this._countdownTimer.isRunning}">
-            ${this.startButtonText}
+            <slot name="start-button">
+              <span class="fas fa-play"></span>
+            </slot>
           </button>
           <button @click="${this.stopCountdown}"
                   class="btn btn-primary"
                   type="button"
                   ?disabled="${!this._countdownTimer.isRunning}">
-            ${this.stopButtonText}
+            <slot name="stop-button">
+              <span class="fas fa-stop"></span>
+            </slot>
           </button>
         </div>
       </div>`

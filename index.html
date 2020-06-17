@@ -39,14 +39,24 @@
 <body hidden>
   <main class="container">
     <section class="mt-4">
-      <countdown-timer id="countdown"></countdown-timer>
+      <countdown-timer id="countdown">
+        <span slot="start-button">
+          <span class="fas fa-play d-inline-block mr-1"></span> Start
+        </span>
+        <span slot="stop-button">
+          <span class="fas fa-stop d-inline-block mr-1"></span> Stop
+        </span>
+      </countdown-timer>
     </section>
 
     <section class="mt-4">
       <h2>Distractions</h2>
-      <editable-list buttontext="+"
-                     id="distractions"
-                     placeholder="Note a distraction"></editable-list>
+      <editable-list id="distractions"
+                     placeholder="Note a distraction">
+        <span slot="add-button">
+          <span class="fas fa-plus d-inline-block mr-1"></span> Add
+        </span>
+      </editable-list>
     </section>
   </main>
 

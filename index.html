@@ -16,15 +16,11 @@
   Pre-fetch the bootstrap CSS file, but don't import it as a style sheet. We
   add bootstrap as a style sheet later via JS.
   -->
-  <link as="style"
-        href="node_modules/bootstrap/dist/css/bootstrap.min.css"
-        id="bootstrap"
-        rel="preload" />
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+        id="bootstrap" />
 
-  <link as="style"
-        href="node_modules/@fortawesome/fontawesome-free/css/solid.min.css"
-        id="font-awesome"
-        rel="preload" />
+  <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+        id="font-awesome" />
 
   <!-- Start the app -->
   <script defer src="src/main.js"></script>

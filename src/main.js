@@ -2,12 +2,12 @@ import { DATABASE, EVENT_NAMES } from './constants.js'
 import './CountdownTimerElement.js'
 import { db } from './database.js'
 import './EditableListElement.js'
-import { loadingPromise, styleSheet } from './styles.js'
+import { litCss } from './styles.js'
 import { TOAST_TYPES } from './ToastContainerElement.js'
 
 (async function init () {
   // Add Bootstrap to the main document as a style sheet.
-  document.adoptedStyleSheets = [styleSheet]
+  document.adoptedStyleSheets = [litCss.styleSheet]
 
   /**
    * The countdown element used as the pomodoro timer.
@@ -39,7 +39,6 @@ import { TOAST_TYPES } from './ToastContainerElement.js'
 
   // Wait for all the setup to complete
   await Promise.all([
-    loadingPromise,
     initCountdownTimer(countdownElement),
     initDistractionList(distractionsElement, toastContainer)
   ])

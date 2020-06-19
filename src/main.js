@@ -1,7 +1,7 @@
 import { DATABASE, EVENT_NAMES } from './constants.js'
 import './CountdownTimerElement.js'
 import { db } from './database.js'
-import './EditableListElement.js'
+import './EditableList.js'
 import { litCss } from './styles.js'
 import { TOAST_TYPES } from './ToastContainerElement.js'
 
@@ -17,7 +17,7 @@ import { TOAST_TYPES } from './ToastContainerElement.js'
 
   /**
    * The editable list used as the list of distractions by the app.
-   * @type {EditableListElement}
+   * @type {EditableList}
    */
   const distractionsElement = document.querySelector('#distractions')
 
@@ -109,7 +109,7 @@ async function deleteCountdownTimestamp (event) {
  * retrieves the list's previously saved items from the DB.
  * @listens {event:EditableListItemAdded}
  * @listens {event:EditableListItemRemoved}
- * @param {EditableListElement} distractionsElement The editable list element to
+ * @param {EditableList} distractionsElement The editable list element to
  * initialise as the distractions list.
  * @param {ToastContainerElement} toastContainer The toast container to which
  * to add toasts when an error occurs.

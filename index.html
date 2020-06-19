@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        name="viewport" />
+  <meta content="A simple pomodoro application to manage productivity"
+        name="Description" />
+
   <title>Mini Pomodoro</title>
+  <link href="src/assets/images/hourglass-icon.png" rel="icon"
+        type="image/png" />
+  <base href="/" />
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!--
+  Pre-fetch the bootstrap CSS file, but don't import it as a style sheet. We
+  add bootstrap as a style sheet later via JS.
+  -->
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+        id="bootstrap" />
 
-  <link rel="stylesheet" href="styles/style.css" />
-  <link rel="stylesheet" href="styles/responsive.css" />
-  <link rel="stylesheet" href="styles/layout.css" />
-  <link rel="icon" type="image/png" href="assets/images/hourglass-icon.png" />
-  <script src="main.js" type="module"></script>
+  <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+        id="font-awesome" />
+
+  <!-- Start the app -->
+  <script defer src="src/main.js"></script>
 </head>
 
-<body>
-  <header class="header">
-    <div class="container">
-      <h1 class="header__title">Mini Pomodoro</h1>
-    </div>
-  </header>
+<body hidden>
+  <main class="container">
+    <section class="mt-4">
+      <countdown-timer id="countdown">
+        <span slot="start-button">
+          <span class="fas fa-play d-inline-block mr-1"></span> Start
+        </span>
+        <span slot="stop-button">
+          <span class="fas fa-stop d-inline-block mr-1"></span> Stop
+        </span>
+      </countdown-timer>
+    </section>
 
-  <main class="main container">
-    <div class="grid--auto-fit">
-      <section>
-        <h2>Countdown Timer</h2>
-        <countdown-timer id="countdown"></countdown-timer>
-      </section>
-
-      <section>
-        <h2>Distractions</h2>
-        <editable-list id="distractions"></editable-list>
-      </section>
-    </div>
+    <section class="mt-4">
+      <h2>Distractions</h2>
+      <editable-list id="distractions"
+                     placeholder="Note a distraction">
+        <span slot="add-button">
+          <span class="fas fa-plus d-inline-block mr-1"></span> Add
+        </span>
+      </editable-list>
+    </section>
   </main>
-</body>
 
+  <toast-container id="toasts"></toast-container>
+</body>
 </html>

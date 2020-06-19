@@ -31,5 +31,18 @@ Temporary Items
 ## Dependency directories
 node_modules/
 
+## Log files
+npm-debug.log
+
 # JetBrains
-.idea/
+.idea/workspace.xml
+
+# Testing
+coverage/
+
+# Temp folders
+.tmp/
+
+# Parcel related files
+dist/
+.cache/

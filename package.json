@@ -22,15 +22,18 @@
     "bootstrap": "^4.5.0",
     "dexie": "^3.0.1",
     "lit-element": "^2.3.1",
-    "lit-html": "^1.2.1",
-    "parcel-plugin-css-as-string": "^1.0.1"
+    "lit-html": "^1.2.1"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-local-plugins": "0.0.3",
     "rimraf": "^3.0.2",
     "standard": "^14.3.3"
   },
   "browserslist": [
     "last 2 Chrome versions"
+  ],
+  "parcel-plugin-local-plugins": [
+    "./parcel-plugin-css-style-sheet/index.js"
   ]
 }

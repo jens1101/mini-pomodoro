@@ -4,19 +4,27 @@ module.exports = class CSSStyleSheetAsset extends CSSAsset {
   async generate () {
     const css = this.ast ? this.ast.render(this.name).css : this.contents
 
-    let js = ''
+    const jsParts = []
+
     if (this.options.hmr) {
       this.addDependency('_css_loader')
-      js = `
+      jsParts.push(`
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
-      `
+      `)
     }
+
+    jsParts.push(`
+      var styleSheet = new window.CSSStyleSheet();
+      styleSheet.replaceSync(${JSON.stringify(css)});
+
+      module.exports = styleSheet;
+    `)
 
     return [{
       type: 'js',
-      value: `${js} module.exports = ${JSON.stringify(css)}`
+      value: jsParts.join('\n')
     }]
   }
 }

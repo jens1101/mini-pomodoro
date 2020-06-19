@@ -1,5 +1,5 @@
-import fontAwesomeCssText from '@fortawesome/fontawesome-free/css/all.min.css'
-import bootstrapCssText from 'bootstrap/dist/css/bootstrap.min.css'
+import fontAwesome from '@fortawesome/fontawesome-free/css/all.min.css'
+import bootstrap from 'bootstrap/dist/css/bootstrap.min.css'
 import { css, unsafeCSS } from 'lit-element'
 
 /**
@@ -8,9 +8,9 @@ import { css, unsafeCSS } from 'lit-element'
  * @type {CSSResult}
  */
 export const litCss = css`
-  ${unsafeCSS(bootstrapCssText)}
+  ${unsafeCSS(bootstrap)}
 
-  ${unsafeCSS(fontAwesomeCssText)}
+  ${unsafeCSS(fontAwesome)}
 
   .icon-button {
     background-color: transparent;

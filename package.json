@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "standard",
-    "build": "rimraf dist .cache && parcel build index.html --public-url ./ --no-source-maps --experimental-scope-hoisting",
+    "build": "rimraf dist .cache && parcel build index.html --public-url '/mini-pomodoro' --no-source-maps --experimental-scope-hoisting",
     "start": "parcel index.html"
   },
   "repository": {

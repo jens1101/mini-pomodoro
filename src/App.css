@@ -1,0 +1,12 @@
+.icon-button {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  float: right;
+  text-shadow: rgb(255, 255, 255) 0 1px 0;
+  opacity: 0.5;
+}
+
+.icon-button:not(:disabled):not(.disabled):hover {
+  opacity: 0.75;
+}

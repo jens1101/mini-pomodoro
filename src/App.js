@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { EditableList } from "./EditableList.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

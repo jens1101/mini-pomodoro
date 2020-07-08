@@ -1,7 +1,8 @@
-import React from "react";
-import { EditableList } from "./EditableList.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { EditableList } from "./EditableList.js";
+import { ToastContainer } from "./ToastContainer.js";
 
 const addDistractionText = (
   <>
@@ -10,12 +11,25 @@ const addDistractionText = (
 );
 
 export function App() {
+  const [
+    /** @type {ToastConfig[]} */
+    toasts,
+    /** @type {Function<ToastConfig[]>} */
+    setToasts,
+  ] = useState([]);
+
+  function onToastClose(toast) {
+    setToasts(toasts.filter((currentToast) => currentToast !== toast));
+  }
+
   return (
     <div className={"container"}>
       <EditableList
         placeholder={"Note a distraction"}
         addButton={addDistractionText}
       />
+
+      <ToastContainer toasts={toasts} onClose={onToastClose} />
     </div>
   );
 }

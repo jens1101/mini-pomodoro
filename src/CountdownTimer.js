@@ -9,36 +9,25 @@ export function CountdownTimer({
   id = "",
   startButton = <FontAwesomeIcon icon={faPlay} />,
   stopButton = <FontAwesomeIcon icon={faStop} />,
-  totalDurationMs = 25 * 60 * 1000,
-  currentDurationMs = 0,
+  durationMs = 25 * 60 * 1000,
+  timeLeftMs = durationMs,
   isRunning = false,
   onStart = () => {},
   onStop = () => {},
   onComplete = () => {},
 }) {
-  const [_currentDurationMs, setCurrentDurationMs] = useState(
-    currentDurationMs
-  );
+  const [_timeLeftMs, setTimeLeftMs] = useState(timeLeftMs);
   const [countdownReference, setCountdownReference] = useState(null);
-  const [_isRunning, setIsRunning] = useState(isRunning);
-
-  if (_isRunning && !countdownReference) {
-    // FIXME: this has an issue where the countdown is started twice. I think
-    //  it has something to do with the fact that react renders a component
-    //   twice.
-    startCountdown();
-  }
 
   async function startCountdown() {
     const startTimestamp = Date.now();
-    const countdownReference = countdown(startTimestamp, totalDurationMs);
+    const countdownReference = countdown(startTimestamp, _timeLeftMs);
     setCountdownReference(countdownReference);
-    setCurrentDurationMs(totalDurationMs);
 
     onStart({ id, startTimestamp });
 
     for await (const { timeLeftMs } of countdownReference) {
-      setCurrentDurationMs(timeLeftMs);
+      setTimeLeftMs(timeLeftMs);
     }
 
     await reset();
@@ -53,15 +42,14 @@ export function CountdownTimer({
   async function reset() {
     if (countdownReference) await countdownReference.return(undefined);
     setCountdownReference(null);
-    setCurrentDurationMs(0);
-    setIsRunning(false);
+    setTimeLeftMs(durationMs);
   }
 
   return (
     <Card className={"text-center bg-dark text-light"}>
       <Card.Body>
-        <Card.Title>{durationToDisplayString(_currentDurationMs)}</Card.Title>
-        <ProgressBar now={(_currentDurationMs / totalDurationMs) * 100} />
+        <Card.Title>{durationToDisplayString(_timeLeftMs)}</Card.Title>
+        <ProgressBar now={(_timeLeftMs / durationMs) * 100} />
       </Card.Body>
       <Card.Footer>
         <Button

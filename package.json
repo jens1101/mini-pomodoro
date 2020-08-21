@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/jens1101/mini-pomodoro/issues"
   },
-  "homepage": "https://jens1101.github.io/mini-pomodoro/",
+  "homepage": ".",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",

@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -10,61 +10,69 @@ export function CountdownTimer({
   startButton = <FontAwesomeIcon icon={faPlay} />,
   stopButton = <FontAwesomeIcon icon={faStop} />,
   durationMs = 25 * 60 * 1000,
-  timeLeftMs = durationMs,
-  isRunning = false,
+  startTimestamp = null,
   onStart = () => {},
   onStop = () => {},
   onComplete = () => {},
 }) {
-  const [_timeLeftMs, setTimeLeftMs] = useState(timeLeftMs);
-  const [countdownReference, setCountdownReference] = useState(null);
+  const [_startTimestamp, setStartTimestamp] = useState(startTimestamp);
+  const [timeLeftMs, setTimeLeftMs] = useState(durationMs);
 
-  async function startCountdown() {
-    const startTimestamp = Date.now();
-    const countdownReference = countdown(startTimestamp, _timeLeftMs);
-    setCountdownReference(countdownReference);
-
-    onStart({ id, startTimestamp });
-
-    for await (const { timeLeftMs } of countdownReference) {
-      setTimeLeftMs(timeLeftMs);
+  useEffect(() => {
+    if (_startTimestamp == null) {
+      setTimeLeftMs(durationMs);
+      onStop({ id });
+      return;
     }
 
-    await reset();
-    onComplete({ id });
-  }
+    const countdownReference = countdown(_startTimestamp, durationMs);
+    let countdownAborted = false;
 
-  async function stopCountdown() {
-    await reset();
-    onStop();
-  }
+    onStart({ id, _startTimestamp });
 
-  async function reset() {
-    if (countdownReference) await countdownReference.return(undefined);
-    setCountdownReference(null);
-    setTimeLeftMs(durationMs);
-  }
+    (async () => {
+      for await (const { timeLeftMs } of countdownReference) {
+        if (countdownAborted) return;
+
+        setTimeLeftMs(timeLeftMs);
+      }
+    })().then(() => {
+      if (countdownAborted) return;
+
+      setStartTimestamp(null);
+      setTimeLeftMs(durationMs);
+
+      onComplete({ id });
+    });
+
+    return () => {
+      void countdownReference.return(undefined);
+      countdownAborted = true;
+    };
+  }, [_startTimestamp, durationMs, id, onComplete, onStart, onStop]);
 
   return (
     <Card className={"text-center bg-dark text-light"}>
       <Card.Body>
-        <Card.Title>{durationToDisplayString(_timeLeftMs)}</Card.Title>
-        <ProgressBar now={(_timeLeftMs / durationMs) * 100} />
+        <Card.Title>{durationToDisplayString(timeLeftMs)}</Card.Title>
+        <ProgressBar now={(timeLeftMs / durationMs) * 100} />
       </Card.Body>
+
       <Card.Footer>
         <Button
-          onClick={startCountdown}
+          onClick={() => setStartTimestamp(Date.now())}
           variant={"primary"}
           type="button"
-          disabled={countdownReference != null}
+          disabled={_startTimestamp != null}
         >
           {startButton}
         </Button>
+
         <Button
-          onClick={stopCountdown}
+          onClick={() => setStartTimestamp(null)}
           variant={"primary"}
           type="button"
-          disabled={countdownReference == null}
+          disabled={_startTimestamp == null}
         >
           {stopButton}
         </Button>

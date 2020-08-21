@@ -25,11 +25,7 @@ export function App() {
 
   return (
     <div className={"container"}>
-      <CountdownTimer
-        isRunning={true}
-        currentDurationMs={1000}
-        totalDurationMs={5000}
-      />
+      <CountdownTimer />
 
       <EditableList
         placeholder={"Note a distraction"}

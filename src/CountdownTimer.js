@@ -6,7 +6,6 @@ import Card from "react-bootstrap/Card";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
 export function CountdownTimer({
-  id = "",
   startButton = <FontAwesomeIcon icon={faPlay} />,
   stopButton = <FontAwesomeIcon icon={faStop} />,
   durationMs = 25 * 60 * 1000,
@@ -15,20 +14,16 @@ export function CountdownTimer({
   onStop = () => {},
   onComplete = () => {},
 }) {
-  const [_startTimestamp, setStartTimestamp] = useState(startTimestamp);
   const [timeLeftMs, setTimeLeftMs] = useState(durationMs);
 
   useEffect(() => {
-    if (_startTimestamp == null) {
+    if (startTimestamp == null) {
       setTimeLeftMs(durationMs);
-      onStop({ id });
       return;
     }
 
-    const countdownReference = countdown(_startTimestamp, durationMs);
+    const countdownReference = countdown(startTimestamp, durationMs);
     let countdownAborted = false;
-
-    onStart({ id, _startTimestamp });
 
     (async () => {
       for await (const { timeLeftMs } of countdownReference) {
@@ -39,17 +34,15 @@ export function CountdownTimer({
     })().then(() => {
       if (countdownAborted) return;
 
-      setStartTimestamp(null);
       setTimeLeftMs(durationMs);
-
-      onComplete({ id });
+      onComplete();
     });
 
     return () => {
       void countdownReference.return(undefined);
       countdownAborted = true;
     };
-  }, [_startTimestamp, durationMs, id, onComplete, onStart, onStop]);
+  }, [durationMs, onComplete, startTimestamp]);
 
   return (
     <Card className={"text-center bg-dark text-light"}>
@@ -60,19 +53,19 @@ export function CountdownTimer({
 
       <Card.Footer>
         <Button
-          onClick={() => setStartTimestamp(Date.now())}
+          onClick={() => onStart(Date.now())}
           variant={"primary"}
           type="button"
-          disabled={_startTimestamp != null}
+          disabled={startTimestamp != null}
         >
           {startButton}
         </Button>
 
         <Button
-          onClick={() => setStartTimestamp(null)}
+          onClick={() => onStop()}
           variant={"primary"}
           type="button"
-          disabled={_startTimestamp == null}
+          disabled={startTimestamp == null}
         >
           {stopButton}
         </Button>
@@ -93,17 +86,17 @@ async function* countdown(startTimestamp, durationMs, tickSize = 1000) {
       inaccuracy = mod;
     }
 
-    const nextTickSize = tickSize - inaccuracy;
-
-    await new Promise((resolve) => setTimeout(resolve, nextTickSize));
-
-    elapsedMs += tickSize;
-
     yield {
       timeLeftMs: durationMs - elapsedMs,
       elapsedMs,
       durationMs,
     };
+
+    const nextTickSize = tickSize - inaccuracy;
+
+    await new Promise((resolve) => setTimeout(resolve, nextTickSize));
+
+    elapsedMs += tickSize;
   }
 }
 

@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPlus, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { DATABASE } from "./constants.js";
@@ -7,15 +7,10 @@ import { db } from "./database.js";
 import { EditableList } from "./EditableList.js";
 import { TOAST_TYPES, ToastContainer } from "./ToastContainer.js";
 
-const addDistractionText = (
-  <>
-    <FontAwesomeIcon icon={faPlus} /> Add
-  </>
-);
-
 export function App() {
   const countdownId = "countdown";
   const distractionsId = "distractions";
+  const countdownDurationMs = 10000;
   const [toasts, setToasts] = useState([]);
   const [startTimestamp, setStartTimestamp] = useState(null);
   const [items, setItems] = useState([]);
@@ -85,12 +80,27 @@ export function App() {
         onStart={onCountdownTimerUpdate}
         onStop={onCountdownTimerUpdate}
         onComplete={onCountdownTimerUpdate}
+        durationMs={countdownDurationMs}
+        startButton={
+          <>
+            <FontAwesomeIcon icon={faPlay} /> Start
+          </>
+        }
+        stopButton={
+          <>
+            <FontAwesomeIcon icon={faStop} /> Stop
+          </>
+        }
       />
 
       <EditableList
         items={items}
         placeholder={"Note a distraction"}
-        addButton={addDistractionText}
+        addButton={
+          <>
+            <FontAwesomeIcon icon={faPlus} /> Add
+          </>
+        }
         onAdd={onListUpdate}
         onRemove={onListUpdate}
       />

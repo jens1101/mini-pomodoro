@@ -6,6 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "serve": "serve build --ssl-cert ${SSL_CERT} --ssl-key ${SSL_KEY}",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -34,7 +35,8 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "prettier": "2.0.5",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.3",
+    "serve": "^11.3.2"
   },
   "eslintConfig": {
     "extends": "react-app"

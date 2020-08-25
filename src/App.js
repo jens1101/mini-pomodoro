@@ -21,7 +21,11 @@ export function App() {
       .then((entry) => {
         if (!entry) return;
 
-        setStartTimestamp(entry[DATABASE.COUNTDOWNS.START_TIMESTAMP]);
+        const startTimestamp = entry[DATABASE.COUNTDOWNS.START_TIMESTAMP];
+
+        if (startTimestamp + countdownDurationMs < Date.now()) return;
+
+        setStartTimestamp(startTimestamp);
       });
 
     db.table(DATABASE.LIST_ITEMS.STORE)
@@ -31,7 +35,7 @@ export function App() {
 
         setItems(entry[DATABASE.LIST_ITEMS.ITEMS]);
       });
-  }, []);
+  }, [countdownDurationMs]);
 
   function onToastClose(toast) {
     setToasts(toasts.filter((currentToast) => currentToast !== toast));

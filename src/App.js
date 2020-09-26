@@ -1,5 +1,3 @@
-import { faPlay, faPlus, faStop } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { DATABASE } from "./constants.js";
 import { CountdownTimer } from "./CountdownTimer.js";
@@ -85,26 +83,14 @@ export function App() {
         onStop={onCountdownTimerUpdate}
         onComplete={onCountdownTimerUpdate}
         durationMs={countdownDurationMs}
-        startButton={
-          <>
-            <FontAwesomeIcon icon={faPlay} /> Start
-          </>
-        }
-        stopButton={
-          <>
-            <FontAwesomeIcon icon={faStop} /> Stop
-          </>
-        }
+        startButtonText={"Start"}
+        stopButtonText={"Stop"}
       />
 
       <EditableList
         items={items}
         placeholder={"Note a distraction"}
-        addButton={
-          <>
-            <FontAwesomeIcon icon={faPlus} /> Add
-          </>
-        }
+        addButtonText={"Add"}
         onAdd={onListUpdate}
         onRemove={onListUpdate}
       />

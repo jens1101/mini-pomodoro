@@ -6,8 +6,8 @@ import Card from "react-bootstrap/Card";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
 export function CountdownTimer({
-  startButton = <FontAwesomeIcon icon={faPlay} />,
-  stopButton = <FontAwesomeIcon icon={faStop} />,
+  startButtonText = "",
+  stopButtonText = "",
   durationMs = 25 * 60 * 1000,
   startTimestamp = null,
   onStart = () => {},
@@ -58,7 +58,8 @@ export function CountdownTimer({
           type="button"
           disabled={startTimestamp != null}
         >
-          {startButton}
+          <FontAwesomeIcon icon={faPlay} />
+          {` ${startButtonText}`}
         </Button>
 
         <Button
@@ -67,7 +68,8 @@ export function CountdownTimer({
           type="button"
           disabled={startTimestamp == null}
         >
-          {stopButton}
+          <FontAwesomeIcon icon={faStop} />
+          {` ${stopButtonText}`}
         </Button>
       </Card.Footer>
     </Card>

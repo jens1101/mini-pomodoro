@@ -27,10 +27,13 @@ import React, { useState } from "react";
 
 /**
  *
- * @param {string} placeholder The placeholder to display in the text input element.
+ * @param {string} placeholder The placeholder to display in the text input
+ * element.
  * @param {EditableListItem[]} items
- * @param {JSX.Element} addButton The text or component to display in the add item button.
- * @param {JSX.Element} removeButton The text or component to display in the remove item button.
+ * @param {string} addButtonText The text or component to display in the add
+ * item button.
+ * @param {string} removeButtonText The text or component to display in the
+ * remove item button.
  * @param {listChangedCallback} onAdd
  * @param {listChangedCallback} onRemove
  * @return {JSX.Element}
@@ -39,8 +42,8 @@ import React, { useState } from "react";
 export function EditableList({
   placeholder = "",
   items = [],
-  addButton = <FontAwesomeIcon icon={faPlus} />,
-  removeButton = <FontAwesomeIcon icon={faTimes} />,
+  addButtonText = "",
+  removeButtonText = "",
   onAdd = () => {},
   onRemove = () => {},
 }) {
@@ -58,7 +61,8 @@ export function EditableList({
           onClick={() => removeItem(item)}
           title={"Remove item"}
         >
-          {removeButton}
+          <FontAwesomeIcon icon={faTimes} />
+          {removeButtonText}
         </button>
       </li>
     ));
@@ -109,7 +113,8 @@ export function EditableList({
           />
           <div className={"input-group-append"}>
             <button className={"btn btn-primary"} type={"submit"}>
-              {addButton}
+              <FontAwesomeIcon icon={faPlus} />
+              {` ${addButtonText}`}
             </button>
           </div>
         </div>

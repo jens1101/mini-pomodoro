@@ -40,19 +40,14 @@ export const TOAST_TYPES = {
 
 /**
  *
- * @param {Object} props
- * @param {ToastConfig[]} props.toasts
- * @param {ToastContainer~onClose} props.onClose
- * @returns {*}
+ * @param toasts
+ * @param onClose
+ * @return {JSX.Element}
  * @constructor
  */
-export function ToastContainer(props) {
-  const onClose = props.onClose instanceof Function ? props.onClose : () => {};
-
+export function ToastContainer({ toasts = [], onClose = () => {} } = {}) {
   return (
-    <div className={"toast-container"}>
-      {toastsToJsx(props.toasts, onClose)}
-    </div>
+    <div className={"toast-container"}>{toastsToJsx(toasts, onClose)}</div>
   );
 }
 

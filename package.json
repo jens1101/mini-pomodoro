@@ -25,10 +25,10 @@
     "lit-html": "^1.2.1"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4",
+    "parcel-bundler": "^1.12.5",
     "parcel-plugin-local-plugins": "0.0.3",
     "rimraf": "^3.0.2",
-    "standard": "^14.3.3"
+    "standard": "^16.0.3"
   },
   "browserslist": [
     "last 2 Chrome versions"

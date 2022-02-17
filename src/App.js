@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DATABASE } from "./constants.js";
 import { CountdownTimer } from "./CountdownTimer.js";
 import { db } from "./database.js";
 import { EditableList } from "./EditableList.js";
-import { TOAST_TYPES, ToastContainer } from "./ToastContainer.js";
+import { TOAST_TYPES, Toasts } from "./Toasts.js";
 
 export function App() {
   const countdownId = "countdown";
   const distractionsId = "distractions";
-  const countdownDurationMs = 10000;
+  const countdownDurationMs = 25 * 60 * 1000;
   const [toasts, setToasts] = useState([]);
   const [startTimestamp, setStartTimestamp] = useState(null);
   const [items, setItems] = useState([]);
@@ -77,25 +77,30 @@ export function App() {
 
   return (
     <div className={"container"}>
-      <CountdownTimer
-        startTimestamp={startTimestamp}
-        onStart={onCountdownTimerUpdate}
-        onStop={onCountdownTimerUpdate}
-        onComplete={onCountdownTimerUpdate}
-        durationMs={countdownDurationMs}
-        startButtonText={"Start"}
-        stopButtonText={"Stop"}
-      />
+      <section className={"my-3"}>
+        <CountdownTimer
+          startTimestamp={startTimestamp}
+          onStart={onCountdownTimerUpdate}
+          onStop={onCountdownTimerUpdate}
+          onComplete={onCountdownTimerUpdate}
+          durationMs={countdownDurationMs}
+          startButtonText={"Start"}
+          stopButtonText={"Stop"}
+        />
+      </section>
 
-      <EditableList
-        items={items}
-        placeholder={"Note a distraction"}
-        addButtonText={"Add"}
-        onAdd={onListUpdate}
-        onRemove={onListUpdate}
-      />
+      <section>
+        <h2>Distractions</h2>
+        <EditableList
+          items={items}
+          placeholder={"Note a distraction"}
+          addButtonText={"Add"}
+          onAdd={onListUpdate}
+          onRemove={onListUpdate}
+        />
+      </section>
 
-      <ToastContainer toasts={toasts} onClose={onToastClose} />
+      <Toasts toasts={toasts} onClose={onToastClose} />
     </div>
   );
 }

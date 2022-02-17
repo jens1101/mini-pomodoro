@@ -1,6 +1,6 @@
-import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import { useState } from "react";
 
 /**
  * An object that represents an item in the editable list element.
@@ -52,8 +52,11 @@ export function EditableList({
   const listItems = items
     .concat([])
     .sort((a, b) => a.text.localeCompare(b.text, undefined, { numeric: true }))
-    .map((item, index) => (
-      <li className={"list-group-item d-flex align-items-center"} key={index}>
+    .map((item) => (
+      <li
+        className={"list-group-item d-flex align-items-center"}
+        key={item.text}
+      >
         <span className={"flex-grow-1"}>{item.text}</span>
         <button
           type={"button"}
@@ -100,6 +103,7 @@ export function EditableList({
         <label htmlFor={"itemText"} className={"sr-only"}>
           {placeholder}
         </label>
+
         <div className={"input-group"}>
           <input
             autoFocus={true}
@@ -111,12 +115,10 @@ export function EditableList({
             value={itemText}
             onChange={(event) => setItemText(event.target.value)}
           />
-          <div className={"input-group-append"}>
-            <button className={"btn btn-primary"} type={"submit"}>
-              <FontAwesomeIcon icon={faPlus} />
-              {` ${addButtonText}`}
-            </button>
-          </div>
+          <button className={"btn btn-primary"} type={"submit"}>
+            <FontAwesomeIcon icon={faPlus} />
+            {` ${addButtonText}`}
+          </button>
         </div>
       </form>
 

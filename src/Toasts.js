@@ -6,9 +6,7 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import Toast from "react-bootstrap/Toast";
-import "./ToastContainer.css";
+import { Toast, ToastContainer } from "react-bootstrap";
 
 /**
  * All the configuration necessary for a toast.
@@ -20,7 +18,7 @@ import "./ToastContainer.css";
 
 /**
  * Triggered whenever a toast has been closed by the user
- * @callback ToastContainer~onClose
+ * @callback Toasts~onClose
  * @param {ToastConfig} toast
  */
 
@@ -40,17 +38,23 @@ export const TOAST_TYPES = {
 
 /**
  *
- * @param toasts
- * @param onClose
+ * @param {ToastConfig[]} toasts
+ * @param {Toasts~onClose} onClose
  * @return {JSX.Element}
- * @constructor
  */
-export function ToastContainer({ toasts = [], onClose = () => {} } = {}) {
+export function Toasts({ toasts = [], onClose = () => {} } = {}) {
   return (
-    <div className={"toast-container"}>{toastsToJsx(toasts, onClose)}</div>
+    <ToastContainer position={"top-end"} className={"m-3"}>
+      {toastsToJsx(toasts, onClose)}
+    </ToastContainer>
   );
 }
 
+/**
+ * @param {ToastConfig[]} toasts
+ * @param {Toasts~onClose} onCloseCallback
+ * @return {*}
+ */
 function toastsToJsx(toasts, onCloseCallback) {
   return toasts.map((toast, index) => {
     const icon = getToastIcon(toast);
@@ -62,12 +66,17 @@ function toastsToJsx(toasts, onCloseCallback) {
           <FontAwesomeIcon icon={icon} className={`mr-1 ${textClass}`} />
           <strong className={`mr-auto ${textClass}`}>{toast.headerText}</strong>
         </Toast.Header>
-        <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+        <Toast.Body>{toast.bodyText}</Toast.Body>
       </Toast>
     );
   });
 }
 
+/**
+ *
+ * @param {ToastConfig} toast
+ * @return {IconDefinition}
+ */
 function getToastIcon(toast) {
   switch (toast.type) {
     case TOAST_TYPES.DANGER:
@@ -84,6 +93,11 @@ function getToastIcon(toast) {
   }
 }
 
+/**
+ *
+ * @param {ToastConfig} toast
+ * @return {string}
+ */
 function getToastTextClass(toast) {
   switch (toast.type) {
     case TOAST_TYPES.DANGER:

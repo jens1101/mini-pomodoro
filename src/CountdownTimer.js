@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import ProgressBar from "react-bootstrap/ProgressBar";
+import { useEffect, useState } from "react";
+import { Button, Card, ProgressBar } from "react-bootstrap";
+import { Duration } from "./Duration";
 
 export function CountdownTimer({
   startButtonText = "",
@@ -31,12 +30,12 @@ export function CountdownTimer({
 
         setTimeLeftMs(timeLeftMs);
       }
-    })().then(() => {
+
       if (countdownAborted) return;
 
       setTimeLeftMs(durationMs);
       onComplete();
-    });
+    })();
 
     return () => {
       void countdownReference.return(undefined);
@@ -47,15 +46,20 @@ export function CountdownTimer({
   return (
     <Card className={"text-center bg-dark text-light"}>
       <Card.Body>
-        <Card.Title>{durationToDisplayString(timeLeftMs)}</Card.Title>
+        <Card.Title>
+          <div className={"display-1"}>
+            <Duration durationMs={timeLeftMs} />
+          </div>
+        </Card.Title>
         <ProgressBar now={(timeLeftMs / durationMs) * 100} />
       </Card.Body>
 
       <Card.Footer>
         <Button
+          className={"mx-2 my-1"}
           onClick={() => onStart(Date.now())}
           variant={"primary"}
-          type="button"
+          type={"button"}
           disabled={startTimestamp != null}
         >
           <FontAwesomeIcon icon={faPlay} />
@@ -63,9 +67,10 @@ export function CountdownTimer({
         </Button>
 
         <Button
+          className={"mx-2 my-1"}
           onClick={() => onStop()}
           variant={"primary"}
-          type="button"
+          type={"button"}
           disabled={startTimestamp == null}
         >
           <FontAwesomeIcon icon={faStop} />
@@ -100,24 +105,4 @@ async function* countdown(startTimestamp, durationMs, tickSize = 1000) {
 
     elapsedMs += tickSize;
   }
-}
-
-/**
- * Converts the given number of milliseconds into a timer display string.
- * Hours, minutes, and seconds are separated by colons.
- * @nosideeffects
- * @param {number} durationMs The duration in milliseconds.
- * @return {string} A human readable string representing the specified
- * duration.
- */
-function durationToDisplayString(durationMs) {
-  const durationSeconds = durationMs / 1000;
-  const seconds = `${Math.floor(durationSeconds % 60)}`.padStart(2, "0");
-
-  const durationMinutes = durationSeconds / 60;
-  const minutes = `${Math.floor(durationMinutes % 60)}`.padStart(2, "0");
-
-  const hours = `${Math.floor(minutes / 60)}`.padStart(2, "0");
-
-  return `${hours}:${minutes}:${seconds}`;
 }

@@ -44,8 +44,13 @@ yarn-error.log*
 # Testing
 coverage/
 
+# SSL certificates
+!certs/
+certs/*
+!certs/.keep
+
 # Production
-/build
+build/
 
 # Misc
 .env.local

@@ -19,7 +19,7 @@
  */
 
 /**
- * Contains constants related to the app's database.
+ * Contains related to the app's database.
  * @type {Object}
  */
 export const DATABASE = {
@@ -72,4 +72,27 @@ export const DATABASE = {
      */
     ITEMS: "items",
   },
+};
+
+/**
+ * Enum containing all possible notification permission states.
+ * @type {Object}
+ */
+export const NOTIFICATION_PERMISSION = {
+  /**
+   * The user refuses to have notifications displayed.
+   * @type {string}
+   */
+  DENIED: "denied",
+  /**
+   * The user accepts having notifications displayed.
+   * @type {string}
+   */
+  GRANTED: "granted",
+  /**
+   * The user choice is unknown and therefore the browser will act as if the
+   * value were denied.
+   * @type {string}
+   */
+  DEFAULT: "default",
 };

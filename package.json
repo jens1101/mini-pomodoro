@@ -8,7 +8,8 @@
     "build": "react-scripts build",
     "serve": "serve build --ssl-cert ${SSL_CERT} --ssl-key ${SSL_KEY}",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write src"
   },
   "repository": {
     "type": "git",

@@ -111,9 +111,7 @@ export function App() {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
 
-      const notification = await showNotification("Pomodoro Complete", {
-        soundUrl: pomodoroOverUrl,
-      });
+      const notification = await showNotification("Pomodoro Complete");
 
       setCompleteNotification(notification);
     } catch (error) {

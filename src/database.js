@@ -19,3 +19,6 @@ db.version(0.2).stores({
 // list items are now stored in an array instead of as individual strings.
 db.version(1).stores({ listItems: null });
 db.version(2).stores({ listItems: "id" });
+
+// Add store for saving alert data
+db.version(3).stores({ alerts: "id" });

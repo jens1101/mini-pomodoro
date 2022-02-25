@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
 import { Alert } from "react-bootstrap";
-import pomodoroOverUrl from "./assets/pomodoro-over.mp3";
 import { DATABASE } from "./constants.js";
 import { CountdownTimer } from "./CountdownTimer.js";
 import { db } from "./database.js";
@@ -11,25 +11,73 @@ import { useNotification } from "./useNotification";
 const COUNTDOWN_ID = "countdown";
 const DISTRACTIONS_ID = "distractions";
 const COUNTDOWN_DURATION_MS = 25 * 60 * 1000;
+const NOTIFICATION_ALERT_ID = "notificationPermissionAlert";
 
 export function App() {
   const [toasts, setToasts] = useState([]);
-  const [startTimestamp, setStartTimestamp] = useState(null);
-  const [items, setItems] = useState([]);
   const [completeNotification, setCompleteNotification] = useState();
   const { showNotification, shouldAskForPermission } = useNotification();
+
+  const startTimestamp = useLiveQuery(
+    async () => {
+      const entry = await db.table(DATABASE.COUNTDOWNS.STORE).get(COUNTDOWN_ID);
+      const startTimestamp = entry?.[DATABASE.COUNTDOWNS.START_TIMESTAMP];
+
+      return startTimestamp + COUNTDOWN_DURATION_MS >= Date.now()
+        ? startTimestamp
+        : null;
+    },
+    [],
+    null
+  );
+
+  const items = useLiveQuery(
+    async () => {
+      const entry = await db
+        .table(DATABASE.LIST_ITEMS.STORE)
+        .get(DISTRACTIONS_ID);
+
+      return entry?.[DATABASE.LIST_ITEMS.ITEMS] ?? [];
+    },
+    [],
+    []
+  );
+
+  const isNotificationDismissed = useLiveQuery(
+    async () => {
+      const entry = await db
+        .table(DATABASE.ALERTS.STORE)
+        .get(NOTIFICATION_ALERT_ID);
+
+      return !!entry?.[DATABASE.ALERTS.DISMISSED];
+    },
+    [],
+    true
+  );
 
   function onToastClose(toast) {
     setToasts(toasts.filter((currentToast) => currentToast !== toast));
   }
 
+  async function onAlertClosed() {
+    try {
+      await dismissAlert(NOTIFICATION_ALERT_ID);
+    } catch (error) {
+      setToasts((toasts) => [
+        ...toasts,
+        {
+          type: TOAST_TYPES.DANGER,
+          headerText: "Error dismissing alert",
+          bodyText: error.message,
+        },
+      ]);
+    }
+  }
+
   async function onListUpdate({ currentItems, previousItems }) {
     try {
       await saveListItems(DISTRACTIONS_ID, currentItems);
-      setItems(currentItems);
     } catch (error) {
-      setItems(previousItems);
-
       setToasts((toasts) => [
         ...toasts,
         {
@@ -44,7 +92,6 @@ export function App() {
   async function onCountdownTimerStart(startTimestamp) {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, startTimestamp);
-      setStartTimestamp(startTimestamp);
       completeNotification?.close?.();
     } catch (error) {
       onCountdownUpdateError(error);
@@ -54,7 +101,6 @@ export function App() {
   async function onCountdownTimerStop() {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
-      setStartTimestamp(null);
       completeNotification?.close?.();
     } catch (error) {
       onCountdownUpdateError(error);
@@ -64,7 +110,6 @@ export function App() {
   async function onCountdownTimerComplete() {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
-      setStartTimestamp(null);
 
       const notification = await showNotification("Pomodoro Complete", {
         soundUrl: pomodoroOverUrl,
@@ -77,8 +122,6 @@ export function App() {
   }
 
   function onCountdownUpdateError(error) {
-    setStartTimestamp(null);
-
     setToasts((toasts) => [
       ...toasts,
       {
@@ -89,32 +132,15 @@ export function App() {
     ]);
   }
 
-  useEffect(() => {
-    db.table(DATABASE.COUNTDOWNS.STORE)
-      .get(COUNTDOWN_ID)
-      .then((entry) => {
-        if (!entry) return;
-
-        const startTimestamp = entry[DATABASE.COUNTDOWNS.START_TIMESTAMP];
-
-        if (startTimestamp + COUNTDOWN_DURATION_MS < Date.now()) return;
-
-        setStartTimestamp(startTimestamp);
-      });
-
-    db.table(DATABASE.LIST_ITEMS.STORE)
-      .get(DISTRACTIONS_ID)
-      .then((entry) => {
-        if (!entry) return;
-
-        setItems(entry[DATABASE.LIST_ITEMS.ITEMS]);
-      });
-  }, []);
-
   return (
     <div className={"container"}>
       <section>
-        <Alert variant={"info"} show={shouldAskForPermission}>
+        <Alert
+          variant={"info"}
+          show={shouldAskForPermission && !isNotificationDismissed}
+          onClose={onAlertClosed}
+          dismissible={true}
+        >
           <Alert.Heading>Notification Permission</Alert.Heading>
           <p>Please grant us permission to show you notifications</p>
         </Alert>
@@ -174,5 +200,12 @@ async function saveListItems(id, items) {
   return db.table(DATABASE.LIST_ITEMS.STORE).put({
     [DATABASE.LIST_ITEMS.ID]: id,
     [DATABASE.LIST_ITEMS.ITEMS]: items,
+  });
+}
+
+async function dismissAlert(id) {
+  return db.table(DATABASE.ALERTS.STORE).put({
+    [DATABASE.ALERTS.ID]: id,
+    [DATABASE.ALERTS.DISMISSED]: true,
   });
 }

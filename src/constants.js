@@ -72,6 +72,28 @@ export const DATABASE = {
      */
     ITEMS: "items",
   },
+
+  /**
+   * All constants related to alerts.
+   * @type {Object}
+   */
+  ALERTS: {
+    /**
+     * The table in which all alert-related data is stored.
+     * @type {string}
+     */
+    STORE: "alerts",
+    /**
+     * The key path for alerts. This is used to uniquely identify each alert.
+     * @type {string}
+     */
+    ID: "id",
+    /**
+     * The key path for whether the current alert has been dismissed.
+     * @type {string}
+     */
+    DISMISSED: "dismissed",
+  },
 };
 
 /**

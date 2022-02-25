@@ -63,8 +63,8 @@ function toastsToJsx(toasts, onCloseCallback) {
     return (
       <Toast onClose={() => onCloseCallback(toast)} key={index}>
         <Toast.Header>
-          <FontAwesomeIcon icon={icon} className={`mr-1 ${textClass}`} />
-          <strong className={`mr-auto ${textClass}`}>{toast.headerText}</strong>
+          <FontAwesomeIcon icon={icon} className={`me-1 ${textClass}`} />
+          <strong className={`me-auto ${textClass}`}>{toast.headerText}</strong>
         </Toast.Header>
         <Toast.Body>{toast.bodyText}</Toast.Body>
       </Toast>

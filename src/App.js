@@ -7,6 +7,7 @@ import { db } from "./database.js";
 import { EditableList } from "./EditableList.js";
 import { TOAST_TYPES, Toasts } from "./Toasts.js";
 import { useNotification } from "./useNotification";
+import { useToasts } from "./useToasts";
 
 const COUNTDOWN_ID = "countdown";
 const DISTRACTIONS_ID = "distractions";
@@ -14,9 +15,9 @@ const COUNTDOWN_DURATION_MS = 25 * 60 * 1000;
 const NOTIFICATION_ALERT_ID = "notificationPermissionAlert";
 
 export function App() {
-  const [toasts, setToasts] = useState([]);
   const [completeNotification, setCompleteNotification] = useState();
   const { showNotification, shouldAskForPermission } = useNotification();
+  const { showToast } = useToasts();
 
   const startTimestamp = useLiveQuery(
     async () => {
@@ -55,37 +56,27 @@ export function App() {
     true
   );
 
-  function onToastClose(toast) {
-    setToasts(toasts.filter((currentToast) => currentToast !== toast));
-  }
-
   async function onAlertClosed() {
     try {
       await dismissAlert(NOTIFICATION_ALERT_ID);
     } catch (error) {
-      setToasts((toasts) => [
-        ...toasts,
-        {
-          type: TOAST_TYPES.DANGER,
-          headerText: "Error dismissing alert",
-          bodyText: error.message,
-        },
-      ]);
+      showToast({
+        type: TOAST_TYPES.DANGER,
+        headerText: "Error dismissing alert",
+        bodyText: error.message,
+      });
     }
   }
 
-  async function onListUpdate({ currentItems, previousItems }) {
+  async function onListUpdate({ currentItems }) {
     try {
       await saveListItems(DISTRACTIONS_ID, currentItems);
     } catch (error) {
-      setToasts((toasts) => [
-        ...toasts,
-        {
-          type: TOAST_TYPES.DANGER,
-          headerText: "Error updating distractions",
-          bodyText: error.message,
-        },
-      ]);
+      showToast({
+        type: TOAST_TYPES.DANGER,
+        headerText: "Error updating distractions",
+        bodyText: error.message,
+      });
     }
   }
 
@@ -94,7 +85,11 @@ export function App() {
       await saveCountdownTimestamp(COUNTDOWN_ID, startTimestamp);
       completeNotification?.close?.();
     } catch (error) {
-      onCountdownUpdateError(error);
+      showToast({
+        type: TOAST_TYPES.DANGER,
+        headerText: "Unable to start countdown timer",
+        bodyText: error.message,
+      });
     }
   }
 
@@ -103,7 +98,11 @@ export function App() {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
       completeNotification?.close?.();
     } catch (error) {
-      onCountdownUpdateError(error);
+      showToast({
+        type: TOAST_TYPES.DANGER,
+        headerText: "Unable to stop countdown timer",
+        bodyText: error.message,
+      });
     }
   }
 
@@ -112,22 +111,14 @@ export function App() {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
 
       const notification = await showNotification("Pomodoro Complete");
-
       setCompleteNotification(notification);
     } catch (error) {
-      onCountdownUpdateError(error);
-    }
-  }
-
-  function onCountdownUpdateError(error) {
-    setToasts((toasts) => [
-      ...toasts,
-      {
+      showToast({
         type: TOAST_TYPES.DANGER,
         headerText: "Error updating countdown timer",
         bodyText: error.message,
-      },
-    ]);
+      });
+    }
   }
 
   return (
@@ -167,7 +158,7 @@ export function App() {
         />
       </section>
 
-      <Toasts toasts={toasts} onClose={onToastClose} />
+      <Toasts />
     </div>
   );
 }

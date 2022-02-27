@@ -7,13 +7,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Toast, ToastContainer } from "react-bootstrap";
+import { useToasts } from "./useToasts";
 
 /**
  * All the configuration necessary for a toast.
  * @typedef ToastConfig
  * @property {TOAST_TYPES} type
- * @property {string|TemplateResult} headerText
- * @property {string|TemplateResult} bodyText
+ * @property {string|JSX.Element} headerText
+ * @property {string|JSX.Element} bodyText
  */
 
 /**
@@ -38,14 +39,18 @@ export const TOAST_TYPES = {
 
 /**
  *
- * @param {ToastConfig[]} toasts
- * @param {Toasts~onClose} onClose
  * @return {JSX.Element}
  */
-export function Toasts({ toasts = [], onClose = () => {} } = {}) {
+export function Toasts() {
+  const { toasts, closeToast } = useToasts();
+
   return (
-    <ToastContainer position={"top-end"} className={"m-3"}>
-      {toastsToJsx(toasts, onClose)}
+    <ToastContainer
+      position={"top-end"}
+      className={"m-3"}
+      style={{ zIndex: "1060" }}
+    >
+      {toastsToJsx(toasts, closeToast)}
     </ToastContainer>
   );
 }
@@ -53,7 +58,7 @@ export function Toasts({ toasts = [], onClose = () => {} } = {}) {
 /**
  * @param {ToastConfig[]} toasts
  * @param {Toasts~onClose} onCloseCallback
- * @return {*}
+ * @return {JSX.Element[]}
  */
 function toastsToJsx(toasts, onCloseCallback) {
   return toasts.map((toast, index) => {

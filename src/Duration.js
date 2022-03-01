@@ -22,6 +22,12 @@ function durationToDisplayStrings(durationMs) {
   };
 }
 
+/**
+ * Component that displays the specified duration as a formatted string.
+ * @param {number} durationMs The duration (in milliseconds) that needs to be
+ * displayed.
+ * @return {JSX.Element}
+ */
 export function Duration({ durationMs }) {
   const { hours, minutes, seconds } = durationToDisplayStrings(durationMs);
 

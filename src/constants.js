@@ -1,25 +1,5 @@
 /**
- * The return type of `html`, which holds a Template and the values from
- * interpolated expressions.
- * @typedef TemplateResult
- * @property {TemplateStringsArray} strings
- * @property {*[]} values
- * @property {string} type
- * @property {Function<string>} getHTML Returns a string of HTML used to create
- * a `<template>` element.
- * @property {Function<HTMLTemplateElement>} getTemplateElement
- */
-
-/**
- * @typedef CSSResult
- * @property {string} cssText
- * @property {CSSStyleSheet|null} [_styleSheet]
- * @property {CSSStyleSheet|null} styleSheet
- * @property {Function<string>} toString
- */
-
-/**
- * Contains related to the app's database.
+ * Contains constants related to the app's database.
  * @type {Object}
  */
 export const DATABASE = {
@@ -72,7 +52,6 @@ export const DATABASE = {
      */
     ITEMS: "items",
   },
-
   /**
    * All constants related to alerts.
    * @type {Object}
@@ -98,23 +77,21 @@ export const DATABASE = {
 
 /**
  * Enum containing all possible notification permission states.
- * @type {Object}
+ * @readonly
+ * @enum {string}
  */
 export const NOTIFICATION_PERMISSION = {
   /**
    * The user refuses to have notifications displayed.
-   * @type {string}
    */
   DENIED: "denied",
   /**
    * The user accepts having notifications displayed.
-   * @type {string}
    */
   GRANTED: "granted",
   /**
    * The user choice is unknown and therefore the browser will act as if the
    * value were denied.
-   * @type {string}
    */
   DEFAULT: "default",
 };

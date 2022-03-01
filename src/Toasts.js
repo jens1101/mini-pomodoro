@@ -12,15 +12,18 @@ import { useToasts } from "./useToasts";
 /**
  * All the configuration necessary for a toast.
  * @typedef ToastConfig
- * @property {TOAST_TYPES} type
- * @property {string|JSX.Element} headerText
- * @property {string|JSX.Element} bodyText
+ * @property {TOAST_TYPES} type The type of this toast. This will affect its
+ * appearance.
+ * @property {string|JSX.Element} headerText The text to display in the header
+ * of the toast.
+ * @property {string|JSX.Element} bodyText The text to display in the body of
+ * the toast.
  */
 
 /**
  * Triggered whenever a toast has been closed by the user
  * @callback Toasts~onClose
- * @param {ToastConfig} toast
+ * @param {ToastConfig} toast The toast that was closed.
  */
 
 /**
@@ -38,35 +41,25 @@ export const TOAST_TYPES = {
 };
 
 /**
+ * Component responsible for displaying toasts.
  *
+ * It's not possible to show and hide toasts via this component. Instead, use
+ * the {@link useToasts} hook.
  * @return {JSX.Element}
  */
 export function Toasts() {
   const { toasts, closeToast } = useToasts();
 
-  return (
-    <ToastContainer
-      position={"top-end"}
-      className={"m-3"}
-      style={{ zIndex: "1060" }}
-    >
-      {toastsToJsx(toasts, closeToast)}
-    </ToastContainer>
-  );
-}
-
-/**
- * @param {ToastConfig[]} toasts
- * @param {Toasts~onClose} onCloseCallback
- * @return {JSX.Element[]}
- */
-function toastsToJsx(toasts, onCloseCallback) {
-  return toasts.map((toast, index) => {
+  /**
+   * The JSX for all the toasts that will be displayed to the user.
+   * @type {JSX.Element[]}
+   */
+  const toastsJsx = toasts.map((toast, index) => {
     const icon = getToastIcon(toast);
     const textClass = getToastTextClass(toast);
 
     return (
-      <Toast onClose={() => onCloseCallback(toast)} key={index}>
+      <Toast onClose={() => closeToast(toast)} key={index}>
         <Toast.Header>
           <FontAwesomeIcon icon={icon} className={`me-1 ${textClass}`} />
           <strong className={`me-auto ${textClass}`}>{toast.headerText}</strong>
@@ -75,10 +68,20 @@ function toastsToJsx(toasts, onCloseCallback) {
       </Toast>
     );
   });
+
+  return (
+    <ToastContainer
+      position={"top-end"}
+      className={"m-3"}
+      style={{ zIndex: "1060" }}
+    >
+      {toastsJsx}
+    </ToastContainer>
+  );
 }
 
 /**
- *
+ * Returns the applicable Fontawesome icon definition for the specified toast.
  * @param {ToastConfig} toast
  * @return {IconDefinition}
  */
@@ -99,7 +102,7 @@ function getToastIcon(toast) {
 }
 
 /**
- *
+ * Returns the applicable text class for the specified toast.
  * @param {ToastConfig} toast
  * @return {string}
  */

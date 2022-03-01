@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { DATABASE } from "./constants.js";
 import { CountdownTimer } from "./CountdownTimer.js";
@@ -9,16 +9,51 @@ import { TOAST_TYPES, Toasts } from "./Toasts.js";
 import { useNotification } from "./useNotification";
 import { useToasts } from "./useToasts";
 
+/**
+ * The ID of the countdown timer used in this component. This is used to store
+ * it's state in IDB.
+ * @type {string}
+ */
 const COUNTDOWN_ID = "countdown";
+
+/**
+ * The ID of list of distractions used in this component. This is used to store
+ * it's state in IDB.
+ * @type {string}
+ */
 const DISTRACTIONS_ID = "distractions";
-const COUNTDOWN_DURATION_MS = 25 * 60 * 1000;
+
+/**
+ * The ID of the alert used in this component. This is used to store it's state
+ * in IDB.
+ * @type {string}
+ */
 const NOTIFICATION_ALERT_ID = "notificationPermissionAlert";
 
+/**
+ * The number of milliseconds for how long a pomodoro countdown will last.
+ * @type {number}
+ */
+const COUNTDOWN_DURATION_MS = 25 * 60 * 1000;
+
+/**
+ * The root component for the entire app
+ * @return {JSX.Element}
+ */
 export function App() {
+  /**
+   * The notification that is shown when the timer completes.
+   * @type {[Notification, function(Notification)]}
+   */
   const [completeNotification, setCompleteNotification] = useState();
   const { showNotification, shouldAskForPermission } = useNotification();
   const { showToast } = useToasts();
 
+  /**
+   * The timestamp for when the pomodoro timer started counting down or null if
+   * the timer isn't currently running.
+   * @type {number|null}
+   */
   const startTimestamp = useLiveQuery(
     async () => {
       const entry = await db.table(DATABASE.COUNTDOWNS.STORE).get(COUNTDOWN_ID);
@@ -32,6 +67,10 @@ export function App() {
     null
   );
 
+  /**
+   * All the distractions that have been noted down.
+   * @type {EditableListItem[]}
+   */
   const items = useLiveQuery(
     async () => {
       const entry = await db
@@ -44,6 +83,11 @@ export function App() {
     []
   );
 
+  /**
+   * Weather or not the alert for requesting notification permission has been
+   * dismissed by the user.
+   * @type {boolean}
+   */
   const isNotificationDismissed = useLiveQuery(
     async () => {
       const entry = await db
@@ -56,6 +100,11 @@ export function App() {
     true
   );
 
+  /**
+   * Handler for when the user dismissed the alert requesting for notification
+   * permission. A toast will be shown when an error occurred.
+   * @return {Promise<void>}
+   */
   async function onAlertClosed() {
     try {
       await dismissAlert(NOTIFICATION_ALERT_ID);
@@ -68,6 +117,14 @@ export function App() {
     }
   }
 
+  /**
+   * Handler for when the current list of distractions has been updated. A toast
+   * will be shown when an error occurred.
+   * @param {Object} options
+   * @param {EditableListItem[]} options.currentItems All the current
+   * distractions.
+   * @return {Promise<void>}
+   */
   async function onListUpdate({ currentItems }) {
     try {
       await saveListItems(DISTRACTIONS_ID, currentItems);
@@ -80,6 +137,13 @@ export function App() {
     }
   }
 
+  /**
+   * Handler for when the pomodoro countdown timer started. A toast will be
+   * shown when an error occurred.
+   * @param {number} startTimestamp The timestamp when the countdown timer
+   * started.
+   * @return {Promise<void>}
+   */
   async function onCountdownTimerStart(startTimestamp) {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, startTimestamp);
@@ -93,6 +157,11 @@ export function App() {
     }
   }
 
+  /**
+   * Handler for when the pomodoro countdown timer was stopped by the user. A
+   * toast will be shown when an error occurred.
+   * @return {Promise<void>}
+   */
   async function onCountdownTimerStop() {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
@@ -106,6 +175,12 @@ export function App() {
     }
   }
 
+  /**
+   * Handler for when the pomodoro countdown timer completed. A notification
+   * will be displayed to the user if the IDB was successfully updated,
+   * otherwise a toast will be shown when an error occurred.
+   * @return {Promise<void>}
+   */
   async function onCountdownTimerComplete() {
     try {
       await saveCountdownTimestamp(COUNTDOWN_ID, null);
@@ -120,6 +195,23 @@ export function App() {
       });
     }
   }
+
+  // Effect used to automatically dismiss the pomodoro complete notification
+  // after the user closed the app.
+  useEffect(() => {
+    if (!completeNotification) return;
+
+    window.addEventListener("beforeunload", onBeforeUnload);
+
+    function onBeforeUnload(event) {
+      completeNotification.close();
+      delete event.returnValue;
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  }, [completeNotification]);
 
   return (
     <div className={"container"}>
@@ -165,8 +257,12 @@ export function App() {
 
 /**
  * Saves the given timestamp as the start timestamp for the current countdown
- * element in the current DB.
- * @return {Promise<string>} Resolves into the ID of the countdown
+ * element in IDB.
+ * @param {string} id The ID of the countdown timer
+ * @param {number} startTimestamp The timestamp when the countdown timer
+ * started.
+ * @return {Promise<string>} Resolves into the ID of the countdown timer
+ * @throws {DexieError} If the IDB operation failed
  */
 async function saveCountdownTimestamp(id, startTimestamp) {
   return db.table(DATABASE.COUNTDOWNS.STORE).put({
@@ -183,7 +279,7 @@ async function saveCountdownTimestamp(id, startTimestamp) {
  * list to
  * @returns {Promise<string>} If the operation succeeds then resolves to the
  * key under which the list was stored in the table
- * @throws {DexieError} If the DB operation failed
+ * @throws {DexieError} If the IDB operation failed
  */
 async function saveListItems(id, items) {
   return db.table(DATABASE.LIST_ITEMS.STORE).put({
@@ -192,6 +288,13 @@ async function saveListItems(id, items) {
   });
 }
 
+/**
+ * Dismissed the specified alert.
+ * @param {string} id The ID of the alert to dismiss.
+ * @returns {Promise<string>} If the operation succeeds then resolves to the
+ * key under which the alert was stored in the table
+ * @throws {DexieError} If the IDB operation failed
+ */
 async function dismissAlert(id) {
   return db.table(DATABASE.ALERTS.STORE).put({
     [DATABASE.ALERTS.ID]: id,

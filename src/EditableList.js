@@ -52,11 +52,8 @@ export function EditableList({
   const listItems = items
     .concat([])
     .sort((a, b) => a.text.localeCompare(b.text, undefined, { numeric: true }))
-    .map((item) => (
-      <li
-        className={"list-group-item d-flex align-items-center"}
-        key={item.text}
-      >
+    .map((item, index) => (
+      <li className={"list-group-item d-flex align-items-center"} key={index}>
         <span className={"flex-grow-1"}>{item.text}</span>
         <button
           type={"button"}

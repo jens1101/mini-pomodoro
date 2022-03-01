@@ -27,15 +27,45 @@ export function useNotification() {
    * permission was granted or undefined if not.
    * @memberOf useNotification
    * @param {string} title The title to show in the notification.
-   * @param {NotificationOptions} [options] All additional optional options to
-   * pass to the Notification instance.
+   * @param {NotificationOptions} [notificationOptions = {}] All additional
+   * options to pass to the Notification instance.
+   * @param {Object} [additionalOptions] Additional options used to configure
+   * the behaviour of the notification.
+   * @param {boolean} [additionalOptions.enableDefaultClickBehaviour = true]
+   * Whether to enable the default click behaviour. By default, when the user
+   * clicks on the notification then the current window gets focused and the
+   * notification is dismissed.
    * @return {Notification|undefined} The Notification instance if permission
    * was granted or undefined otherwise.
    */
-  function showNotification(title, options) {
+  function showNotification(
+    title,
+    notificationOptions = {},
+    { enableDefaultClickBehaviour = true } = {}
+  ) {
     if (permission !== NOTIFICATION_PERMISSION.GRANTED) return;
 
-    return new Notification(title, options);
+    const notification = new Notification(title, notificationOptions);
+
+    if (enableDefaultClickBehaviour) {
+      notification.addEventListener(
+        "click",
+        () => {
+          // Focus the topmost window, just in case this app is embedded in a
+          // frame.
+          window.top.focus();
+
+          // Close the notification, it has served its purpose.
+          notification.close();
+        },
+        {
+          once: true,
+          passive: true,
+        }
+      );
+    }
+
+    return notification;
   }
 
   // Effect to automatically request notification permission if it hasn't been

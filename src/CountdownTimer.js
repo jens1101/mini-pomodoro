@@ -91,7 +91,7 @@ export function CountdownTimer({
       <Card.Body>
         <Card.Title>
           <div className={"display-1"}>
-            <Duration durationMs={timeLeftMs} />
+            <Duration durationMs={Math.max(timeLeftMs, 0)} />
           </div>
         </Card.Title>
         <ProgressBar now={(timeLeftMs / durationMs) * 100} />
